@@ -163,6 +163,13 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   }
 });
 
+// Serve legacy local uploads that were committed to git
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
+
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
