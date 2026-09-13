@@ -18,7 +18,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // Helper to get data from PostgreSQL
 const getPortfolioData = async () => {
-  if (!process.env.DATABASE_URL) return {};
+  if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) return {};
   try {
     const res = await db.query('SELECT data FROM portfolio_data WHERE id = 1');
     if (res.rows.length > 0) return JSON.parse(res.rows[0].data);
@@ -31,7 +31,7 @@ const getPortfolioData = async () => {
 
 // Helper to save data to PostgreSQL
 const savePortfolioData = async (data) => {
-  if (!process.env.DATABASE_URL) return 0;
+  if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) return 0;
   try {
     const res = await db.query('UPDATE portfolio_data SET data = $1 WHERE id = 1', [JSON.stringify(data)]);
     return res.rowCount;

@@ -6,8 +6,8 @@ const { Pool } = pkg;
 dotenv.config();
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' || process.env.DATABASE_URL?.includes('vercel-storage') 
+  connectionString: process.env.POSTGRES_URL || process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' || (process.env.POSTGRES_URL || process.env.DATABASE_URL)?.includes('vercel-storage') 
        ? { rejectUnauthorized: false } 
        : false,
 });
@@ -71,8 +71,8 @@ const defaultData = {
 };
 
 export const initDb = async () => {
-  if (!process.env.DATABASE_URL) {
-    console.warn("DATABASE_URL not set. Skipping PostgreSQL initialization.");
+  if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) {
+    console.warn("DATABASE_URL or POSTGRES_URL not set. Skipping PostgreSQL initialization.");
     return;
   }
 
