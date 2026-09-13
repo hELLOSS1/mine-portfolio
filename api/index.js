@@ -137,25 +137,54 @@ app.put('/api/portfolio/root', async (req, res) => {
   }
 });
 
-// POST file upload (Base64 encoding)
+// POST file upload (Store in Postgres images table to avoid JSON size limits)
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
 
   try {
-    // Convert the image buffer directly into a Base64 string
+    await initDb();
     const base64Image = req.file.buffer.toString('base64');
     const mimeType = req.file.mimetype;
     
-    // Create a Data URI that browsers can use directly in <img src="..." />
-    const dataUri = `data:${mimeType};base64,${base64Image}`;
+    // Insert into images table
+    const result = await db.query(
+      'INSERT INTO images (mime_type, base64_data) VALUES ($1, $2) RETURNING id',
+      [mimeType, base64Image]
+    );
     
-    // Return the Data URI to be saved in the database
-    res.json({ url: dataUri });
+    const id = result.rows[0].id;
+    // Return a URL that points to our own image fetching route
+    res.json({ url: `/api/images/${id}` });
   } catch (error) {
     console.error("Image processing error:", error);
     res.status(500).json({ error: "Failed to process image." });
+  }
+});
+
+// GET an image from Postgres by ID
+app.get('/api/images/:id', async (req, res) => {
+  try {
+    await initDb();
+    const { id } = req.params;
+    const result = await db.query('SELECT mime_type, base64_data FROM images WHERE id = $1', [id]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).send('Image not found');
+    }
+    
+    const { mime_type, base64_data } = result.rows[0];
+    const imageBuffer = Buffer.from(base64_data, 'base64');
+    
+    res.writeHead(200, {
+      'Content-Type': mime_type,
+      'Content-Length': imageBuffer.length
+    });
+    res.end(imageBuffer);
+  } catch (error) {
+    console.error("Error fetching image:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 

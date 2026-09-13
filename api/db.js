@@ -84,6 +84,14 @@ export const initDb = async () => {
         data TEXT NOT NULL
       )
     `);
+    
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS images (
+        id SERIAL PRIMARY KEY,
+        mime_type TEXT NOT NULL,
+        base64_data TEXT NOT NULL
+      )
+    `);
 
     const result = await pool.query('SELECT data FROM portfolio_data WHERE id = 1');
     if (result.rows.length === 0) {
