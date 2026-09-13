@@ -138,3 +138,66 @@ p {
 .gap-2 { gap: 8px; }
 .gap-4 { gap: 16px; }
 .gap-6 { gap: 24px; }
+
+/* --- Dark Theme Component Overrides --- */
+.dark-theme .top-content-card,
+.dark-theme .search-bar,
+.dark-theme .icon-btn,
+.dark-theme .project-card,
+.dark-theme .btn-secondary,
+.dark-theme .search-bar input,
+.dark-theme .stat-card,
+.dark-theme .title-icon-small {
+  background: var(--card-bg) !important;
+}
+.dark-theme .search-bar input,
+.dark-theme .top-content-card h2,
+.dark-theme .hero-content h1,
+.dark-theme .stat-info h3,
+.dark-theme .project-card h4,
+.dark-theme .timeline-content h4,
+.dark-theme .btn-secondary,
+.dark-theme .info-text .label,
+.dark-theme .skill-name {
+  color: var(--text-dark) !important;
+}
+.dark-theme .hero-banner {
+  background: linear-gradient(100deg, #2D2446 0%, #3B2F5C 100%) !important;
+}
+.dark-theme .greeting,
+.dark-theme .hero-content .bio,
+.dark-theme .stat-info p,
+.dark-theme .tag,
+.dark-theme .timeline-content .date,
+.dark-theme .bio-text,
+.dark-theme .info-text .value,
+.dark-theme .skill-percent,
+.dark-theme .search-bar input::placeholder,
+.dark-theme .projects-list p {
+  color: var(--text-muted) !important;
+}
+.dark-theme .tag,
+.dark-theme .info-icon-wrapper {
+  background: #2D2446 !important;
+}
+.dark-theme .project-card,
+.dark-theme .search-bar,
+.dark-theme .icon-btn,
+.dark-theme .stat-card {
+  border-color: #3B2F5C !important;
+}
+.dark-theme .timeline::before,
+.dark-theme .progress-bg {
+  background: #3B2F5C !important;
+}
+.dark-theme .timeline-dot {
+  border-color: var(--card-bg) !important;
+  box-shadow: 0 0 0 1px #3B2F5C !important;
+}
+.dark-theme .view-all {
+  background: #3B2F5C !important;
+  color: #B8A1FF !important;
+}
+.dark-theme .title-icon {
+  background: #3B2F5C !important;
+}

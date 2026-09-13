@@ -13,7 +13,10 @@ const MainContent = () => {
   const filteredProjects = data.projects.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const scrollToTop = () => {
-    mainRef.current.scrollTo({ top: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (mainRef.current) {
+      mainRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const openResume = () => {
@@ -44,10 +47,10 @@ const MainContent = () => {
       
       <div className="top-content-card">
         {/* Header */}
-        <header style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', position: 'relative' }}>
-          <h2 style={{ fontSize: '24px', color: '#2E2A36', flex: 1 }}>Portfolio</h2>
+        <header style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', gap: '20px' }}>
+          <h2 style={{ fontSize: '24px', color: 'var(--text-dark)' }}>Portfolio</h2>
           
-          <div className="search-bar" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          <div className="search-bar" style={{ flex: 1, width: 'auto', maxWidth: 'none' }}>
             <input 
               type="text" 
               placeholder="Search anything..." 
@@ -56,11 +59,12 @@ const MainContent = () => {
             />
           </div>
 
-          <div className="flex-row gap-4" style={{ alignItems: 'center', flex: 1, justifyContent: 'flex-end' }}>
+          <div className="flex-row gap-4" style={{ alignItems: 'center', flexShrink: 0 }}>
             <div 
               onClick={toggleTheme}
               style={{
                 display: 'flex', alignItems: 'center', background: 'var(--card-bg)',
+                border: '1px solid var(--border-color, rgba(161, 129, 255, 0.2))',
                 borderRadius: '20px', padding: '4px', cursor: 'pointer', boxShadow: 'var(--clay-white)',
                 width: '56px', justifyContent: data.theme === 'dark' ? 'flex-end' : 'flex-start'
               }}
@@ -161,7 +165,7 @@ const MainContent = () => {
                 }}
               >
                 {filteredProjects.length > 0 ? filteredProjects.map(proj => (
-                  <div className="project-card" style={{ border: 'none', flex: `0 0 calc((100% - ${(visibleCardsCount - 1) * 20}px) / ${visibleCardsCount})`, padding: 0, overflow: 'hidden', background: 'white' }} key={proj.id}>
+                  <div className="project-card" style={{ flex: `0 0 calc((100% - ${(visibleCardsCount - 1) * 20}px) / ${visibleCardsCount})`, padding: 0, overflow: 'hidden', background: 'var(--card-bg)' }} key={proj.id}>
                     <img src={proj.img} alt={proj.title} style={{ width: '100%', height: '140px', objectFit: 'cover', margin: 0, borderRadius: 0 }} />
                     <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                       <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '6px' }}>{proj.title}</h4>
