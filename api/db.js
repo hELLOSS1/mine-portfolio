@@ -7,9 +7,7 @@ dotenv.config();
 
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL || process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' || (process.env.POSTGRES_URL || process.env.DATABASE_URL)?.includes('vercel-storage') 
-       ? { rejectUnauthorized: false } 
-       : false,
+  ssl: { rejectUnauthorized: false },
 });
 
 const defaultData = {
