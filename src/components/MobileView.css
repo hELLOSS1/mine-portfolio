@@ -1,0 +1,519 @@
+.mobile-view-container {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #F8F5FE;
+  padding-bottom: 80px; /* space for bottom nav */
+  font-family: 'Outfit', sans-serif;
+  color: #2E2A36;
+}
+
+/* Common Header for all tabs */
+.mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.mobile-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.mobile-header-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.mobile-icon-btn {
+  background: white;
+  border: none;
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #5C5272;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+  cursor: pointer;
+}
+
+/* Home Tab specific */
+.mobile-hero-section {
+  background: linear-gradient(180deg, #E6DCFF 0%, #F5F0FF 100%);
+  border-radius: 24px;
+  margin: 0 20px 20px;
+  padding: 30px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-avatar-wrapper {
+  margin: 0 auto 16px;
+  width: 140px;
+  height: 140px;
+  position: relative;
+  z-index: 2;
+}
+
+.mobile-avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-bottom: 2px solid transparent;
+}
+
+.mobile-hero-section h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: #2E2A36;
+}
+
+.mobile-hero-section .mobile-bio {
+  font-size: 14px;
+  color: #5C5272;
+  margin-bottom: 20px;
+}
+
+.mobile-hero-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.mobile-btn {
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+}
+
+.mobile-btn-primary {
+  background: #9C81F2;
+  color: white;
+  box-shadow: 0 4px 12px rgba(156, 122, 237, 0.3);
+}
+
+.mobile-btn-white {
+  background: white;
+  color: #5C5272;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.mobile-stats-grid {
+  background: white;
+  border-radius: 24px;
+  margin: 0 20px 20px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.mobile-stat-card {
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-stat-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.mobile-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: #2E2A36;
+}
+
+.mobile-stat-label {
+  font-size: 12px;
+  color: #716982;
+  margin: 0;
+}
+
+/* Bottom Navigation */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: white;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 10px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  color: #A19BAE;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.mobile-nav-item.active {
+  background: #F4EFFF;
+  color: #9C81F2;
+}
+
+/* Purple Top Section (For Projects, Skills, Contact) */
+.mobile-purple-header {
+  background: linear-gradient(180deg, #8168DE 0%, #9C81F2 100%);
+  color: white;
+  padding: 40px 20px 80px; /* Extra padding at bottom for overlap */
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  position: relative;
+}
+
+.mobile-purple-header h1 {
+  font-size: 28px;
+  margin: 0 0 8px;
+  color: white;
+}
+
+.mobile-purple-header p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.mobile-purple-overlap {
+  margin: -50px 20px 20px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Contact Tab specific */
+.mobile-contact-card {
+  background: white;
+  border-radius: 24px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mobile-contact-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: white;
+  border: 1px solid #F0EDF6;
+}
+
+.mobile-contact-item-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mobile-contact-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #F4EFFF;
+  color: #8168DE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-contact-text h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #2E2A36;
+}
+.mobile-contact-text p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #716982;
+}
+
+.mobile-socials {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 0;
+}
+
+.mobile-social-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8168DE;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.mobile-hire-me-btn {
+  background: linear-gradient(90deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  border: none;
+  width: 100%;
+}
+
+.mobile-hire-me-btn h4 {
+  margin: 0;
+  font-size: 16px;
+  color: white;
+}
+.mobile-hire-me-btn p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: rgba(255,255,255,0.9);
+}
+
+/* Skills Tab specific */
+.mobile-skills-card {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.mobile-skills-category {
+  margin-bottom: 24px;
+}
+.mobile-skills-category h3 {
+  font-size: 16px;
+  margin: 0 0 16px;
+  color: #2E2A36;
+}
+
+.mobile-skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px;
+}
+
+.mobile-skill-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 8px;
+  border-radius: 16px;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Projects Tab specific */
+.mobile-search-bar {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+.mobile-search-input-wrapper {
+  flex: 1;
+  background: white;
+  border-radius: 24px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mobile-search-input-wrapper input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 14px;
+  font-family: inherit;
+}
+.mobile-search-filter-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: #8168DE;
+}
+
+.mobile-featured-project {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  height: 180px;
+  margin-top: 24px;
+}
+.mobile-featured-project img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mobile-featured-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  color: white;
+}
+.mobile-featured-overlay h3 {
+  color: white;
+  margin: 0 0 4px;
+}
+.mobile-featured-overlay p {
+  color: rgba(255,255,255,0.8);
+  font-size: 12px;
+  margin: 0 0 12px;
+}
+.mobile-featured-tags {
+  display: flex;
+  gap: 8px;
+}
+.mobile-featured-tags span {
+  background: rgba(255,255,255,0.2);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+.mobile-project-list {
+  background: white;
+  border-radius: 24px;
+  padding: 20px;
+}
+
+.mobile-project-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.mobile-project-list-header h3 {
+  font-size: 16px;
+  margin: 0;
+}
+.mobile-project-list-header span {
+  font-size: 13px;
+  color: #8168DE;
+  font-weight: 600;
+}
+
+.mobile-project-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #F0EDF6;
+}
+.mobile-project-item:last-child {
+  border-bottom: none;
+}
+.mobile-project-item-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.mobile-project-item-info {
+  flex: 1;
+}
+.mobile-project-item-info h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+.mobile-project-item-info p {
+  margin: 0 0 8px;
+  font-size: 11px;
+  color: #716982;
+}
+.mobile-project-item-tags {
+  display: flex;
+  gap: 6px;
+}
+.mobile-project-item-tags span {
+  background: #F4EFFF;
+  color: #8168DE;
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* About Tab Specific */
+.mobile-about-card {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.mobile-about-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.mobile-about-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #F4EFFF;
+  color: #8168DE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.mobile-about-item-text h4 {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: #716982;
+}
+.mobile-about-item-text p {
+  margin: 0;
+  font-size: 14px;
+  color: #2E2A36;
+  font-weight: 500;
+}
