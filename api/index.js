@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
-import db from './db.js';
+import db, { initDb } from './db.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,13 +12,14 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Setup file upload handling in memory for Vercel Blob
+// Setup file upload handling in memory for Base64
 const upload = multer({ storage: multer.memoryStorage() });
 
 // Helper to get data from PostgreSQL
 const getPortfolioData = async () => {
   if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) return {};
   try {
+    await initDb();
     const res = await db.query('SELECT data FROM portfolio_data WHERE id = 1');
     if (res.rows.length > 0) return JSON.parse(res.rows[0].data);
     return {};
@@ -32,6 +33,7 @@ const getPortfolioData = async () => {
 const savePortfolioData = async (data) => {
   if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) return 0;
   try {
+    await initDb();
     const res = await db.query('UPDATE portfolio_data SET data = $1 WHERE id = 1', [JSON.stringify(data)]);
     return res.rowCount;
   } catch (err) {

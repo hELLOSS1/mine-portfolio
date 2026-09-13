@@ -68,7 +68,10 @@ const defaultData = {
   }
 };
 
+let isInitialized = false;
+
 export const initDb = async () => {
+  if (isInitialized) return;
   if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) {
     console.warn("DATABASE_URL or POSTGRES_URL not set. Skipping PostgreSQL initialization.");
     return;
@@ -87,12 +90,11 @@ export const initDb = async () => {
       console.log("Database empty. Seeding default data...");
       await pool.query('INSERT INTO portfolio_data (id, data) VALUES (1, $1)', [JSON.stringify(defaultData)]);
     }
+    isInitialized = true;
   } catch (error) {
     console.error("Error initializing PostgreSQL:", error);
+    throw error;
   }
 };
-
-// Initialize connection on load
-initDb();
 
 export default pool;
