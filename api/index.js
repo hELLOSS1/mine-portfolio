@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
 import db from './db.js';
-import { put } from '@vercel/blob';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -135,31 +134,25 @@ app.put('/api/portfolio/root', async (req, res) => {
   }
 });
 
-// POST file upload (Vercel Blob)
+// POST file upload (Base64 encoding)
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
-  
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    return res.status(500).json({ error: 'Vercel Blob token is not configured.' });
-  }
 
   try {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const filename = uniqueSuffix + '-' + req.file.originalname.replace(/\s+/g, '-');
+    // Convert the image buffer directly into a Base64 string
+    const base64Image = req.file.buffer.toString('base64');
+    const mimeType = req.file.mimetype;
     
-    // Upload to Vercel Blob
-    const blob = await put(filename, req.file.buffer, {
-      access: 'public',
-      token: process.env.BLOB_READ_WRITE_TOKEN
-    });
+    // Create a Data URI that browsers can use directly in <img src="..." />
+    const dataUri = `data:${mimeType};base64,${base64Image}`;
     
-    // Return the public URL to the uploaded file
-    res.json({ url: blob.url });
+    // Return the Data URI to be saved in the database
+    res.json({ url: dataUri });
   } catch (error) {
-    console.error("Blob upload error:", error);
-    res.status(500).json({ error: "Failed to upload file to Blob storage." });
+    console.error("Image processing error:", error);
+    res.status(500).json({ error: "Failed to process image." });
   }
 });
 
