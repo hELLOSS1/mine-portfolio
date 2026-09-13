@@ -41,7 +41,6 @@
   border-radius: 20px;
   padding: 10px 18px;
   width: 280px;
-  box-shadow: inset 4px 4px 8px rgba(142, 116, 230, 0.05), inset -4px -4px 8px rgba(255, 255, 255, 1);
   border: 1px solid rgba(161, 129, 255, 0.15);
 }
 
