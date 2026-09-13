@@ -1,13 +1,16 @@
-import sqlite3Pkg from 'sqlite3';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import pkg from 'pg';
+import dotenv from 'dotenv';
+const { Pool } = pkg;
 
-const sqlite3 = sqlite3Pkg.verbose();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Load environment variables for local dev
+dotenv.config();
 
-const dbPath = path.resolve(__dirname, 'portfolio.sqlite');
-const db = new sqlite3.Database(dbPath);
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' || process.env.DATABASE_URL?.includes('vercel-storage') 
+       ? { rejectUnauthorized: false } 
+       : false,
+});
 
 const defaultData = {
   theme: 'light',
@@ -67,24 +70,31 @@ const defaultData = {
   }
 };
 
-db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS portfolio_data (
-    id INTEGER PRIMARY KEY CHECK (id = 1),
-    data TEXT NOT NULL
-  )`);
+export const initDb = async () => {
+  if (!process.env.DATABASE_URL) {
+    console.warn("DATABASE_URL not set. Skipping PostgreSQL initialization.");
+    return;
+  }
 
-  db.get(`SELECT data FROM portfolio_data WHERE id = 1`, (err, row) => {
-    if (err) {
-      console.error("Error reading database:", err);
-      return;
-    }
-    if (!row) {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS portfolio_data (
+        id INTEGER PRIMARY KEY CHECK (id = 1),
+        data TEXT NOT NULL
+      )
+    `);
+
+    const result = await pool.query('SELECT data FROM portfolio_data WHERE id = 1');
+    if (result.rows.length === 0) {
       console.log("Database empty. Seeding default data...");
-      const stmt = db.prepare(`INSERT INTO portfolio_data (id, data) VALUES (1, ?)`);
-      stmt.run(JSON.stringify(defaultData));
-      stmt.finalize();
+      await pool.query('INSERT INTO portfolio_data (id, data) VALUES (1, $1)', [JSON.stringify(defaultData)]);
     }
-  });
-});
+  } catch (error) {
+    console.error("Error initializing PostgreSQL:", error);
+  }
+};
 
-export default db;
+// Initialize connection on load
+initDb();
+
+export default pool;

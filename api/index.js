@@ -1,13 +1,11 @@
 import express from 'express';
 import cors from 'cors';
-import path from 'path';
 import multer from 'multer';
-import fs from 'fs';
 import db from './db.js';
-import { fileURLToPath } from 'url';
+import { put } from '@vercel/blob';
+import dotenv from 'dotenv';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,48 +13,32 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Setup file upload handling
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+// Setup file upload handling in memory for Vercel Blob
+const upload = multer({ storage: multer.memoryStorage() });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
+// Helper to get data from PostgreSQL
+const getPortfolioData = async () => {
+  if (!process.env.DATABASE_URL) return {};
+  try {
+    const res = await db.query('SELECT data FROM portfolio_data WHERE id = 1');
+    if (res.rows.length > 0) return JSON.parse(res.rows[0].data);
+    return {};
+  } catch (err) {
+    console.error("Error reading from PostgreSQL:", err);
+    throw err;
   }
-});
-
-const upload = multer({ storage: storage });
-
-// Expose uploads statically
-app.use('/uploads', express.static(uploadDir));
-
-// Helper to get data
-const getPortfolioData = () => {
-  return new Promise((resolve, reject) => {
-    db.get('SELECT data FROM portfolio_data WHERE id = 1', (err, row) => {
-      if (err) return reject(err);
-      if (row) return resolve(JSON.parse(row.data));
-      resolve({});
-    });
-  });
 };
 
-// Helper to save data
-const savePortfolioData = (data) => {
-  return new Promise((resolve, reject) => {
-    const stmt = db.prepare('UPDATE portfolio_data SET data = ? WHERE id = 1');
-    stmt.run(JSON.stringify(data), function (err) {
-      if (err) return reject(err);
-      resolve(this.changes);
-    });
-    stmt.finalize();
-  });
+// Helper to save data to PostgreSQL
+const savePortfolioData = async (data) => {
+  if (!process.env.DATABASE_URL) return 0;
+  try {
+    const res = await db.query('UPDATE portfolio_data SET data = $1 WHERE id = 1', [JSON.stringify(data)]);
+    return res.rowCount;
+  } catch (err) {
+    console.error("Error writing to PostgreSQL:", err);
+    throw err;
+  }
 };
 
 // GET all data
@@ -153,19 +135,33 @@ app.put('/api/portfolio/root', async (req, res) => {
   }
 });
 
-// POST file upload
-app.post('/api/upload', upload.single('file'), (req, res) => {
+// POST file upload (Vercel Blob)
+app.post('/api/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
   
-  // Return the URL path to the uploaded file
-  const fileUrl = `/api/uploads/${req.file.filename}`;
-  res.json({ url: fileUrl });
-});
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return res.status(500).json({ error: 'Vercel Blob token is not configured.' });
+  }
 
-// Because the frontend might request the image directly via proxy, we route /api/uploads to /uploads statically
-app.use('/api/uploads', express.static(uploadDir));
+  try {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const filename = uniqueSuffix + '-' + req.file.originalname.replace(/\s+/g, '-');
+    
+    // Upload to Vercel Blob
+    const blob = await put(filename, req.file.buffer, {
+      access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN
+    });
+    
+    // Return the public URL to the uploaded file
+    res.json({ url: blob.url });
+  } catch (error) {
+    console.error("Blob upload error:", error);
+    res.status(500).json({ error: "Failed to upload file to Blob storage." });
+  }
+});
 
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
@@ -173,4 +169,5 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
+// Export the app for Vercel Serverless Functions
 export default app;
