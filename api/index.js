@@ -34,8 +34,8 @@ const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supaba
 const supabaseBucket = process.env.SUPABASE_STORAGE_BUCKET || 'portfolio-images';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-do-not-use-in-production';
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'password';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'hELLOSS1';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'hEllo@1234#@#';
 
 // Helper to get data from PostgreSQL
 const getPortfolioData = async () => {
