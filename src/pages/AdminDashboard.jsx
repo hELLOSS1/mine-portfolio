@@ -22,8 +22,8 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    const isAdmin = localStorage.getItem('isAdmin');
-    if (!isAdmin) {
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
       navigate('/login');
     }
   }, [navigate]);
@@ -127,10 +127,19 @@ const AdminDashboard = () => {
       formData.append('file', file);
       try {
         const API_URL = import.meta.env.VITE_API_URL || '';
-        const res = await fetch(`${API_URL}/api/upload`, { method: 'POST', body: formData });
+        const token = localStorage.getItem('adminToken');
+        const res = await fetch(`${API_URL}/api/upload`, { 
+          method: 'POST', 
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData 
+        });
         if (res.ok) {
           const json = await res.json();
           updateData('hero', { avatarImg: json.url });
+        } else if (res.status === 401 || res.status === 403) {
+          alert('Session expired. Please log in again.');
+          localStorage.removeItem('adminToken');
+          navigate('/login');
         }
       } catch (err) {
         console.error('Failed to upload avatar', err);

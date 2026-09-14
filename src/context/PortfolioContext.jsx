@@ -149,11 +149,20 @@ export const PortfolioProvider = ({ children }) => {
 
   const saveAllData = async () => {
     try {
-      await fetch(`${API_URL}/api/portfolio/all`, {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${API_URL}/api/portfolio/all`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(data)
       });
+      if (response.status === 401 || response.status === 403) {
+        alert("Session expired. Please log in again.");
+        localStorage.removeItem('adminToken');
+        window.location.href = '/login';
+      }
     } catch(err) {
       console.error("Failed to save data", err);
     }

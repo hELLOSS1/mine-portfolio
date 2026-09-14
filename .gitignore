@@ -1,7 +1,11 @@
 node_modules/
 dist/
 .env
+.env.*
+!.env.example
 server/node_modules/
 portfolio.sqlite
+*.sqlite
+*.sqlite3
 data/
 uploads/

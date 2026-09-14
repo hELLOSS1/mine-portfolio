@@ -1,13 +1,19 @@
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
+import pkg from 'pg';
 import dotenv from 'dotenv';
-import path from 'path';
-import fs from 'fs';
+const { Pool } = pkg;
 
 // Load environment variables for local dev
 dotenv.config();
 
-const dbPath = process.env.DATABASE_PATH || './data/database.sqlite';
+let connectionString = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+if (connectionString && connectionString.includes('sslmode=')) {
+  connectionString = connectionString.replace(/[?&]sslmode=[^&]+/g, '');
+}
+
+const pool = new Pool({
+  connectionString,
+  ssl: { rejectUnauthorized: false },
+});
 
 const defaultData = {
   theme: 'light',
@@ -67,38 +73,33 @@ const defaultData = {
   }
 };
 
-let dbInstance = null;
+let isInitialized = false;
 
 export const initDb = async () => {
-  if (dbInstance) return dbInstance;
-
-  const dbDir = path.dirname(dbPath);
-  if (!fs.existsSync(dbDir)) {
-    fs.mkdirSync(dbDir, { recursive: true });
+  if (isInitialized) return;
+  if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) {
+    console.warn("DATABASE_URL or POSTGRES_URL not set. Skipping PostgreSQL initialization.");
+    return;
   }
 
   try {
-    dbInstance = await open({
-      filename: dbPath,
-      driver: sqlite3.Database
-    });
-
-    await dbInstance.exec(`
+    await pool.query(`
       CREATE TABLE IF NOT EXISTS portfolio_data (
         id INTEGER PRIMARY KEY CHECK (id = 1),
         data TEXT NOT NULL
       )
     `);
 
-    const result = await dbInstance.get('SELECT data FROM portfolio_data WHERE id = 1');
-    if (!result) {
+    const result = await pool.query('SELECT data FROM portfolio_data WHERE id = 1');
+    if (result.rows.length === 0) {
       console.log("Database empty. Seeding default data...");
-      await dbInstance.run('INSERT INTO portfolio_data (id, data) VALUES (1, ?)', [JSON.stringify(defaultData)]);
+      await pool.query('INSERT INTO portfolio_data (id, data) VALUES (1, $1)', [JSON.stringify(defaultData)]);
     }
-    return dbInstance;
+    isInitialized = true;
   } catch (error) {
-    console.error("Error initializing SQLite:", error);
+    console.error("Error initializing PostgreSQL:", error);
     throw error;
   }
 };
 
+export default pool;

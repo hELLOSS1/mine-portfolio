@@ -1,9 +1,16 @@
 import React from 'react';
-import { Search, Bell, Sparkles } from 'lucide-react';
+import { Search, Bell, Sparkles, LogOut } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
+import { useNavigate } from 'react-router-dom';
 
 const AdminHeader = () => {
   const { data } = usePortfolio();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    navigate('/login');
+  };
 
   return (
     <header className="admin-header">
@@ -29,6 +36,13 @@ const AdminHeader = () => {
             <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Admin</span>
           </div>
         </div>
+
+        <button 
+          onClick={handleLogout}
+          style={{ background: 'none', border: '1px solid #FF4757', borderRadius: '4px', padding: '6px 10px', display: 'flex', alignItems: 'center', gap: '6px', color: '#FF4757', cursor: 'pointer', fontSize: '12px' }}
+        >
+          <LogOut size={14} /> Logout
+        </button>
       </div>
     </header>
   );

@@ -52,10 +52,19 @@ const AdminModal = ({ isOpen, onClose, title, fields, initialData, onSave }) => 
                     data.append('file', file);
                     try {
                       const API_URL = import.meta.env.VITE_API_URL || '';
-                      const res = await fetch(`${API_URL}/api/upload`, { method: 'POST', body: data });
+                      const token = localStorage.getItem('adminToken');
+                      const res = await fetch(`${API_URL}/api/upload`, { 
+                        method: 'POST', 
+                        headers: { 'Authorization': `Bearer ${token}` },
+                        body: data 
+                      });
                       if (res.ok) {
                         const json = await res.json();
                         setFormData(prev => ({ ...prev, [field.name]: json.url }));
+                      } else if (res.status === 401 || res.status === 403) {
+                        alert('Session expired. Please log in again.');
+                        localStorage.removeItem('adminToken');
+                        window.location.href = '/login';
                       }
                     } catch (err) { console.error('Upload failed', err); }
                   }} />
