@@ -11,7 +11,7 @@ import { authMiddleware } from './authMiddleware.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 
 // CORS setup
 const corsOptions = {
@@ -223,7 +223,7 @@ app.post('/api/upload', authMiddleware, upload.single('file'), async (req, res) 
   }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
 
