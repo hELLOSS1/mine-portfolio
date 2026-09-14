@@ -126,7 +126,8 @@ const AdminDashboard = () => {
       const formData = new FormData();
       formData.append('file', file);
       try {
-        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        const API_URL = import.meta.env.VITE_API_URL || '';
+        const res = await fetch(`${API_URL}/api/upload`, { method: 'POST', body: formData });
         if (res.ok) {
           const json = await res.json();
           updateData('hero', { avatarImg: json.url });

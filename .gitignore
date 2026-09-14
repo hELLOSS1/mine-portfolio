@@ -3,3 +3,5 @@ dist/
 .env
 server/node_modules/
 portfolio.sqlite
+data/
+uploads/

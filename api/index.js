@@ -1,47 +1,81 @@
 import express from 'express';
 import cors from 'cors';
 import multer from 'multer';
-import db, { initDb } from './db.js';
+import { initDb } from './db.js';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// CORS setup
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || '*',
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Setup file upload handling in memory for Base64
-const upload = multer({ storage: multer.memoryStorage() });
+// Setup file upload handling in persistent disk storage
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(process.cwd(), 'uploads');
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+}
 
-// Helper to get data from PostgreSQL
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, UPLOAD_DIR);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
+
+// Serve uploads directory
+app.use('/uploads', express.static(UPLOAD_DIR));
+// Keep legacy local uploads that were committed to git
+app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Helper to get data from SQLite
 const getPortfolioData = async () => {
-  if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) return {};
   try {
-    await initDb();
-    const res = await db.query('SELECT data FROM portfolio_data WHERE id = 1');
-    if (res.rows.length > 0) return JSON.parse(res.rows[0].data);
+    const db = await initDb();
+    const res = await db.get('SELECT data FROM portfolio_data WHERE id = 1');
+    if (res) return JSON.parse(res.data);
     return {};
   } catch (err) {
-    console.error("Error reading from PostgreSQL:", err);
+    console.error("Error reading from SQLite:", err);
     throw err;
   }
 };
 
-// Helper to save data to PostgreSQL
+// Helper to save data to SQLite
 const savePortfolioData = async (data) => {
-  if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) return 0;
   try {
-    await initDb();
-    const res = await db.query('UPDATE portfolio_data SET data = $1 WHERE id = 1', [JSON.stringify(data)]);
-    return res.rowCount;
+    const db = await initDb();
+    const res = await db.run('UPDATE portfolio_data SET data = ? WHERE id = 1', [JSON.stringify(data)]);
+    return res.changes;
   } catch (err) {
-    console.error("Error writing to PostgreSQL:", err);
+    console.error("Error writing to SQLite:", err);
     throw err;
   }
 };
+
+// Root endpoint to verify server is running
+app.get('/', (req, res) => {
+  res.send('Portfolio API is running successfully on SQLite!');
+});
 
 // GET all data
 app.get('/api/portfolio', async (req, res) => {
@@ -148,69 +182,24 @@ app.put('/api/portfolio/all', async (req, res) => {
   }
 });
 
-// POST file upload (Store in Postgres images table to avoid JSON size limits)
+// POST file upload (Store in filesystem instead of PostgreSQL)
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
 
   try {
-    await initDb();
-    const base64Image = req.file.buffer.toString('base64');
-    const mimeType = req.file.mimetype;
-    
-    // Insert into images table
-    const result = await db.query(
-      'INSERT INTO images (mime_type, base64_data) VALUES ($1, $2) RETURNING id',
-      [mimeType, base64Image]
-    );
-    
-    const id = result.rows[0].id;
-    // Return a URL that points to our own image fetching route
-    res.json({ url: `/api/images/${id}` });
+    const backendUrl = process.env.VITE_API_URL || ''; 
+    const fileUrl = `${backendUrl}/uploads/${req.file.filename}`;
+    res.json({ url: fileUrl });
   } catch (error) {
     console.error("Image processing error:", error);
     res.status(500).json({ error: "Failed to process image." });
   }
 });
 
-// GET an image from Postgres by ID
-app.get('/api/images/:id', async (req, res) => {
-  try {
-    await initDb();
-    const { id } = req.params;
-    const result = await db.query('SELECT mime_type, base64_data FROM images WHERE id = $1', [id]);
-    
-    if (result.rows.length === 0) {
-      return res.status(404).send('Image not found');
-    }
-    
-    const { mime_type, base64_data } = result.rows[0];
-    const imageBuffer = Buffer.from(base64_data, 'base64');
-    
-    res.writeHead(200, {
-      'Content-Type': mime_type,
-      'Content-Length': imageBuffer.length
-    });
-    res.end(imageBuffer);
-  } catch (error) {
-    console.error("Error fetching image:", error);
-    res.status(500).send("Internal Server Error");
-  }
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
-// Serve legacy local uploads that were committed to git
-import path from 'path';
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
-
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}
-
-// Export the app for Vercel Serverless Functions
 export default app;

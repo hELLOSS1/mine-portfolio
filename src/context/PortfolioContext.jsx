@@ -9,6 +9,8 @@ const PortfolioContext = createContext();
 
 export const usePortfolio = () => useContext(PortfolioContext);
 
+const API_URL = import.meta.env.VITE_API_URL || '';
+
 const defaultData = {
   theme: 'light',
   hero: {
@@ -74,7 +76,7 @@ export const PortfolioProvider = ({ children }) => {
   useEffect(() => {
     const fetchPortfolio = async () => {
       try {
-        const response = await fetch('/api/portfolio');
+        const response = await fetch(`${API_URL}/api/portfolio`);
         if (response.ok) {
           const dbData = await response.json();
           if (Object.keys(dbData).length > 0) {
@@ -147,7 +149,7 @@ export const PortfolioProvider = ({ children }) => {
 
   const saveAllData = async () => {
     try {
-      await fetch('/api/portfolio/all', {
+      await fetch(`${API_URL}/api/portfolio/all`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)

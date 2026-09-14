@@ -51,7 +51,8 @@ const AdminModal = ({ isOpen, onClose, title, fields, initialData, onSave }) => 
                     const data = new FormData();
                     data.append('file', file);
                     try {
-                      const res = await fetch('/api/upload', { method: 'POST', body: data });
+                      const API_URL = import.meta.env.VITE_API_URL || '';
+                      const res = await fetch(`${API_URL}/api/upload`, { method: 'POST', body: data });
                       if (res.ok) {
                         const json = await res.json();
                         setFormData(prev => ({ ...prev, [field.name]: json.url }));
