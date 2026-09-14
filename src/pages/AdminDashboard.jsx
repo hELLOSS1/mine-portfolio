@@ -9,9 +9,17 @@ import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const { data, updateData, updateRootData, addArrayItem, updateArrayItem, deleteArrayItem } = usePortfolio();
+  const { data, updateData, updateRootData, addArrayItem, updateArrayItem, deleteArrayItem, saveAllData } = usePortfolio();
   
+  const [isSaving, setIsSaving] = useState(false);
   const [modalState, setModalState] = useState({ isOpen: false, type: null, data: null });
+
+  const handleSaveAll = async () => {
+    setIsSaving(true);
+    await saveAllData();
+    setIsSaving(false);
+    alert('All changes have been successfully saved and published!');
+  };
 
   useEffect(() => {
     const isAdmin = localStorage.getItem('isAdmin');
@@ -137,6 +145,28 @@ const AdminDashboard = () => {
       <main className="admin-main">
         <AdminHeader />
         
+        <div style={{ padding: '0 24px', display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+          <button 
+            onClick={handleSaveAll} 
+            disabled={isSaving}
+            style={{ 
+              background: 'var(--primary)', 
+              color: 'white', 
+              border: 'none', 
+              padding: '10px 24px', 
+              borderRadius: '8px', 
+              fontWeight: 'bold', 
+              cursor: isSaving ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              opacity: isSaving ? 0.7 : 1
+            }}
+          >
+            {isSaving ? 'Saving...' : 'Save All Changes'}
+          </button>
+        </div>
+
         <div className="admin-content">
           
           {/* TOP ROW: Banner (spans 2) + Live Status (spans 1) */}

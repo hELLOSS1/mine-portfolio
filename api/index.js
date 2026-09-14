@@ -137,6 +137,17 @@ app.put('/api/portfolio/root', async (req, res) => {
   }
 });
 
+// PUT to update all data at once
+app.put('/api/portfolio/all', async (req, res) => {
+  try {
+    const newData = req.body;
+    await savePortfolioData(newData);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // POST file upload (Store in Postgres images table to avoid JSON size limits)
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {

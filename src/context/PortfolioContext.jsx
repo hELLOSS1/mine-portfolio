@@ -98,7 +98,7 @@ export const PortfolioProvider = ({ children }) => {
     }
   }, [data.theme]);
 
-  const updateData = async (section, updates) => {
+  const updateData = (section, updates) => {
     setData(prev => ({
       ...prev,
       [section]: {
@@ -106,85 +106,55 @@ export const PortfolioProvider = ({ children }) => {
         ...updates
       }
     }));
-    try {
-      await fetch('/api/portfolio/root', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key: section, value: updates })
-      });
-    } catch(err) { console.error(err) }
   };
 
-  const updateRootData = async (key, value) => {
+  const updateRootData = (key, value) => {
     setData(prev => ({
       ...prev,
       [key]: value
     }));
-    try {
-      await fetch('/api/portfolio/root', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key, value })
-      });
-    } catch(err) { console.error(err) }
   };
 
-  const toggleVisibility = async (section) => {
+  const toggleVisibility = (section) => {
     const newVisibility = { ...data.visibility, [section]: !data.visibility[section] };
     setData(prev => ({
       ...prev,
       visibility: newVisibility
     }));
-    try {
-      await fetch('/api/portfolio/root', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key: 'visibility', value: newVisibility })
-      });
-    } catch(err) { console.error(err) }
   };
 
-  const addArrayItem = async (section, item) => {
-    try {
-      const response = await fetch(`/api/portfolio/${section}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(item)
-      });
-      if (response.ok) {
-        const savedItem = await response.json();
-        setData(prev => ({
-          ...prev,
-          [section]: [...prev[section], savedItem]
-        }));
-      }
-    } catch(err) { console.error(err) }
+  const addArrayItem = (section, item) => {
+    const newItem = { ...item, id: Date.now() };
+    setData(prev => ({
+      ...prev,
+      [section]: [...prev[section], newItem]
+    }));
   };
 
-  const updateArrayItem = async (section, id, updatedItem) => {
+  const updateArrayItem = (section, id, updatedItem) => {
     setData(prev => ({
       ...prev,
       [section]: prev[section].map(item => item.id === id ? { ...item, ...updatedItem } : item)
     }));
-    try {
-      await fetch(`/api/portfolio/${section}/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedItem)
-      });
-    } catch(err) { console.error(err) }
   };
 
-  const deleteArrayItem = async (section, id) => {
+  const deleteArrayItem = (section, id) => {
     setData(prev => ({
       ...prev,
       [section]: prev[section].filter(item => item.id !== id)
     }));
+  };
+
+  const saveAllData = async () => {
     try {
-      await fetch(`/api/portfolio/${section}/${id}`, {
-        method: 'DELETE'
+      await fetch('/api/portfolio/all', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       });
-    } catch(err) { console.error(err) }
+    } catch(err) {
+      console.error("Failed to save data", err);
+    }
   };
 
   if (loading) {
@@ -192,7 +162,7 @@ export const PortfolioProvider = ({ children }) => {
   }
 
   return (
-    <PortfolioContext.Provider value={{ data, updateData, updateRootData, toggleVisibility, addArrayItem, updateArrayItem, deleteArrayItem }}>
+    <PortfolioContext.Provider value={{ data, updateData, updateRootData, toggleVisibility, addArrayItem, updateArrayItem, deleteArrayItem, saveAllData }}>
       {children}
     </PortfolioContext.Provider>
   );
