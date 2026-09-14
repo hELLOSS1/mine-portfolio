@@ -51,7 +51,7 @@ const AdminModal = ({ isOpen, onClose, title, fields, initialData, onSave }) => 
                     const data = new FormData();
                     data.append('file', file);
                     try {
-                      const API_URL = import.meta.env.VITE_API_URL || '';
+                      const API_URL = import.meta.env.VITE_API_URL || 'https://mine-portfolio-api.onrender.com';
                       const token = localStorage.getItem('adminToken');
                       const res = await fetch(`${API_URL}/api/upload`, { 
                         method: 'POST', 
@@ -65,8 +65,14 @@ const AdminModal = ({ isOpen, onClose, title, fields, initialData, onSave }) => 
                         alert('Session expired. Please log in again.');
                         localStorage.removeItem('adminToken');
                         window.location.href = '/login';
+                      } else {
+                        const errData = await res.json().catch(()=>({}));
+                        alert(`Upload failed: ${errData.error || res.statusText}`);
                       }
-                    } catch (err) { console.error('Upload failed', err); }
+                    } catch (err) { 
+                      console.error('Upload failed', err);
+                      alert('Upload failed. Check console for details.');
+                    }
                   }} />
                   {formData[field.name] && <img src={formData[field.name]} alt="Preview" style={{ width: '80px', height: '80px', objectFit: 'cover', marginTop: '8px', borderRadius: '4px' }} />}
                 </div>

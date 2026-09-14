@@ -126,7 +126,7 @@ const AdminDashboard = () => {
       const formData = new FormData();
       formData.append('file', file);
       try {
-        const API_URL = import.meta.env.VITE_API_URL || '';
+        const API_URL = import.meta.env.VITE_API_URL || 'https://mine-portfolio-api.onrender.com';
         const token = localStorage.getItem('adminToken');
         const res = await fetch(`${API_URL}/api/upload`, { 
           method: 'POST', 
@@ -140,9 +140,13 @@ const AdminDashboard = () => {
           alert('Session expired. Please log in again.');
           localStorage.removeItem('adminToken');
           navigate('/login');
+        } else {
+          const errData = await res.json().catch(()=>({}));
+          alert(`Upload failed: ${errData.error || res.statusText}`);
         }
       } catch (err) {
         console.error('Failed to upload avatar', err);
+        alert('Failed to upload avatar. Check console for details.');
       }
     };
     input.click();

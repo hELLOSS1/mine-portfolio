@@ -9,7 +9,7 @@ const PortfolioContext = createContext();
 
 export const usePortfolio = () => useContext(PortfolioContext);
 
-const API_URL = import.meta.env.VITE_API_URL || '';
+const API_URL = import.meta.env.VITE_API_URL || 'https://mine-portfolio-api.onrender.com';
 
 const defaultData = {
   theme: 'light',
