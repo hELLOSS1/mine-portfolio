@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import MainContent from '../components/MainContent';
 import AboutMeContent from '../components/AboutMeContent';
+import SkillsContent from '../components/SkillsContent';
+import ProjectsContent from '../components/ProjectsContent';
+import ExperienceContent from '../components/ExperienceContent';
+import OtherContent from '../components/OtherContent';
 import RightWidgets from '../components/RightWidgets';
 import MobileView from '../components/MobileView';
 import { usePortfolio } from '../context/PortfolioContext';
@@ -22,11 +26,18 @@ const Portfolio = () => {
     return <MobileView />;
   }
   
+  const isDashboard = activeTab === 'Dashboard';
+  
   return (
-    <div className={`portfolio-layout ${data.theme === 'dark' ? 'dark-theme' : ''}`}>
+    <div className={`portfolio-layout ${data.theme === 'dark' ? 'dark-theme' : ''} ${!isDashboard ? 'full-width-content' : ''}`}>
       <Sidebar />
-      {activeTab === 'About Me' ? <AboutMeContent /> : <MainContent />}
-      <RightWidgets />
+      {isDashboard && <MainContent />}
+      {activeTab === 'About Me' && <AboutMeContent />}
+      {activeTab === 'Skills' && <SkillsContent />}
+      {activeTab === 'Projects' && <ProjectsContent />}
+      {activeTab === 'Experience' && <ExperienceContent />}
+      {['Achievements', 'Contact Me', 'Resume', 'Blog'].includes(activeTab) && <OtherContent tab={activeTab} />}
+      {isDashboard && <RightWidgets />}
     </div>
   );
 };

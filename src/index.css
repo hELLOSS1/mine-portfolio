@@ -86,6 +86,10 @@ body {
   box-sizing: border-box;
 }
 
+.portfolio-layout.full-width-content {
+  grid-template-columns: 180px 1fr;
+}
+
 /* Glass/Neumorphic Card Base */
 .card {
   background: var(--card-bg);
