@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import defaultDataJson from '../data/portfolio.json';
 import avatarImg from '../assets/avatar_mia.jpg';
 import plantImg from '../assets/3d_plant.jpg';
 import taskflowImg from '../assets/taskflow.jpg';
@@ -10,8 +11,6 @@ const PortfolioContext = createContext();
 export const usePortfolio = () => useContext(PortfolioContext);
 
 const API_URL = import.meta.env.MODE === 'production' ? (import.meta.env.VITE_API_URL || 'https://mine-portfolio-api.onrender.com') : '';
-
-import defaultDataJson from '../data/portfolio.json';
 
 // Use imported JSON but fallback to some defaults if missing (though it shouldn't be)
 const defaultData = defaultDataJson || {};
