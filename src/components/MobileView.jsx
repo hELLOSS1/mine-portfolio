@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './MobileView.css';
-import { Home, Folder, Code2, User, MessageSquare, Search, Menu, Play, Download, MapPin, Mail, Phone, Crown, Filter, ChevronRight, Globe, Settings, BookOpen, GraduationCap, Target, Heart } from 'lucide-react';
+import { Moon, Sun, Home, Folder, Code2, User, MessageSquare, Search, Menu, Play, Download, MapPin, Mail, Phone, Crown, Filter, ChevronRight, Globe, Settings, BookOpen, GraduationCap, Target, Heart } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 
 const MobileView = () => {
-  const { data } = usePortfolio();
+  const { data, updateRootData } = usePortfolio();
   const [activeTab, setActiveTab] = useState('Home');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -13,7 +13,9 @@ const MobileView = () => {
       <header className="mobile-header">
         <h2>Portfolio</h2>
         <div className="mobile-header-icons">
-          <button className="mobile-icon-btn"><Search size={20} /></button>
+          <button className="mobile-icon-btn" onClick={() => updateRootData('theme', data.theme === 'dark' ? 'light' : 'dark')}>
+            {data.theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
           <button className="mobile-icon-btn"><Menu size={20} /></button>
         </div>
       </header>
@@ -31,22 +33,22 @@ const MobileView = () => {
       </section>
 
       <section className="mobile-stats-grid">
-        <div className="mobile-stat-card" style={{ background: '#F4EFFF' }}>
-          <div className="mobile-stat-icon-wrapper" style={{ background: '#A181FF' }}><Code2 size={20} /></div>
+        <div className="mobile-stat-card" style={{ background: 'var(--bg-color)' }}>
+          <div className="mobile-stat-icon-wrapper" style={{ background: 'var(--primary)' }}><Code2 size={20} /></div>
           <h3 className="mobile-stat-value">{data.stats.projectsCompleted}</h3>
           <p className="mobile-stat-label">Projects</p>
         </div>
-        <div className="mobile-stat-card" style={{ background: '#FCEEF5' }}>
+        <div className="mobile-stat-card" style={{ background: 'var(--bg-color)' }}>
           <div className="mobile-stat-icon-wrapper" style={{ background: '#F98FB9' }}><Folder size={20} /></div>
           <h3 className="mobile-stat-value">{data.stats.yearsExperience}</h3>
           <p className="mobile-stat-label">Years Exp.</p>
         </div>
-        <div className="mobile-stat-card" style={{ background: '#FEF6EC' }}>
+        <div className="mobile-stat-card" style={{ background: 'var(--bg-color)' }}>
           <div className="mobile-stat-icon-wrapper" style={{ background: '#F7B565' }}><User size={20} /></div>
           <h3 className="mobile-stat-value">{data.stats.happyClients}</h3>
           <p className="mobile-stat-label">Happy Clients</p>
         </div>
-        <div className="mobile-stat-card" style={{ background: '#EEF6FE' }}>
+        <div className="mobile-stat-card" style={{ background: 'var(--bg-color)' }}>
           <div className="mobile-stat-icon-wrapper" style={{ background: '#6BB5F6' }}><Crown size={20} /></div>
           <h3 className="mobile-stat-value">{data.stats.certifications}</h3>
           <p className="mobile-stat-label">Certifications</p>
@@ -209,7 +211,7 @@ const MobileView = () => {
 
         <div className="mobile-socials">
           {data.socialLinks?.map((social, index) => (
-            <button key={index} className="mobile-social-btn" style={{ color: '#5C5272', cursor: 'pointer' }} onClick={() => window.open(social.url, '_blank')} title={social.platform}>
+            <button key={index} className="mobile-social-btn" style={{ color: 'var(--text-muted)', cursor: 'pointer' }} onClick={() => window.open(social.url, '_blank')} title={social.platform}>
               <Globe size={20} />
             </button>
           ))}
@@ -241,54 +243,54 @@ const MobileView = () => {
 
       <div className="mobile-purple-overlap">
         <div className="mobile-about-card">
-          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ background: '#F4EFFF', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+          <h3 style={{ fontSize: '16px', color: 'var(--text-dark)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ background: 'var(--bg-color)', padding: '6px', borderRadius: '8px', display: 'flex' }}>
               <User size={18} color="#A181FF"/>
             </div>
             Introduction
           </h3>
-          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272', margin: 0 }}>{data.aboutMe?.description || data.hero?.bio}</p>
+          <p style={{ fontSize: '14px', lineHeight: '1.6', color: 'var(--text-muted)', margin: 0 }}>{data.aboutMe?.description || data.hero?.bio}</p>
         </div>
       </div>
 
       <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
-        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ background: '#FCEEF5', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+        <h3 style={{ fontSize: '16px', color: 'var(--text-dark)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: 'var(--bg-color)', padding: '6px', borderRadius: '8px', display: 'flex' }}>
             <BookOpen size={18} color="#F98FB9"/>
           </div>
           My Background
         </h3>
-        <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272', margin: 0 }}>{data.aboutMe?.background}</p>
+        <p style={{ fontSize: '14px', lineHeight: '1.6', color: 'var(--text-muted)', margin: 0 }}>{data.aboutMe?.background}</p>
       </div>
 
       <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
-        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ background: '#FEF6EC', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+        <h3 style={{ fontSize: '16px', color: 'var(--text-dark)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: 'var(--bg-color)', padding: '6px', borderRadius: '8px', display: 'flex' }}>
             <GraduationCap size={18} color="#F7B565"/>
           </div>
           Education
         </h3>
-        <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272', margin: 0 }}>{data.aboutMe?.education}</p>
+        <p style={{ fontSize: '14px', lineHeight: '1.6', color: 'var(--text-muted)', margin: 0 }}>{data.aboutMe?.education}</p>
       </div>
 
       <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
-        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ background: '#EEF6FE', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+        <h3 style={{ fontSize: '16px', color: 'var(--text-dark)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: 'var(--bg-color)', padding: '6px', borderRadius: '8px', display: 'flex' }}>
             <Target size={18} color="#6BB5F6"/>
           </div>
           Career Goals
         </h3>
-        <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272', margin: 0 }}>{data.aboutMe?.careerGoals}</p>
+        <p style={{ fontSize: '14px', lineHeight: '1.6', color: 'var(--text-muted)', margin: 0 }}>{data.aboutMe?.careerGoals}</p>
       </div>
 
       <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
-        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ background: '#F1EBF9', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+        <h3 style={{ fontSize: '16px', color: 'var(--text-dark)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: 'var(--bg-color)', padding: '6px', borderRadius: '8px', display: 'flex' }}>
             <Heart size={18} color="#8E74E6"/>
           </div>
           Interests
         </h3>
-        <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272', margin: 0 }}>{data.aboutMe?.interests}</p>
+        <p style={{ fontSize: '14px', lineHeight: '1.6', color: 'var(--text-muted)', margin: 0 }}>{data.aboutMe?.interests}</p>
       </div>
     </>
   );

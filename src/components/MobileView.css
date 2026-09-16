@@ -3,10 +3,10 @@
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: #F8F5FE;
+  background-color: var(--bg-color);
   padding-bottom: 80px; /* space for bottom nav */
   font-family: 'Outfit', sans-serif;
-  color: #2E2A36;
+  color: var(--text-dark);
 }
 
 /* Common Header for all tabs */
@@ -29,7 +29,7 @@
 }
 
 .mobile-icon-btn {
-  background: white;
+  background: var(--card-bg);
   border: none;
   border-radius: 12px;
   width: 40px;
@@ -37,14 +37,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #5C5272;
+  color: var(--text-muted);
   box-shadow: 0 4px 10px rgba(0,0,0,0.03);
   cursor: pointer;
 }
 
 /* Home Tab specific */
 .mobile-hero-section {
-  background: linear-gradient(180deg, #E6DCFF 0%, #F5F0FF 100%);
+  background: linear-gradient(180deg, var(--hero-gradient-start, #E6DCFF) 0%, var(--hero-gradient-end, #F5F0FF) 100%);
   border-radius: 24px;
   margin: 0 20px 20px;
   padding: 30px 20px;
@@ -72,12 +72,12 @@
   font-size: 26px;
   font-weight: 700;
   margin: 0 0 8px;
-  color: #2E2A36;
+  color: var(--text-dark);
 }
 
 .mobile-hero-section .mobile-bio {
   font-size: 14px;
-  color: #5C5272;
+  color: var(--text-muted);
   margin-bottom: 20px;
 }
 
@@ -99,19 +99,19 @@
 }
 
 .mobile-btn-primary {
-  background: #9C81F2;
+  background: var(--primary);
   color: white;
   box-shadow: 0 4px 12px rgba(156, 122, 237, 0.3);
 }
 
 .mobile-btn-white {
-  background: white;
-  color: #5C5272;
+  background: var(--card-bg);
+  color: var(--text-muted);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .mobile-stats-grid {
-  background: white;
+  background: var(--card-bg);
   border-radius: 24px;
   margin: 0 20px 20px;
   padding: 20px;
@@ -142,12 +142,12 @@
   font-size: 20px;
   font-weight: 700;
   margin: 0;
-  color: #2E2A36;
+  color: var(--text-dark);
 }
 
 .mobile-stat-label {
   font-size: 12px;
-  color: #716982;
+  color: var(--text-muted);
   margin: 0;
 }
 
@@ -158,7 +158,7 @@
   left: 0;
   right: 0;
   height: 70px;
-  background: white;
+  background: var(--card-bg);
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   display: flex;
@@ -176,7 +176,7 @@
   gap: 4px;
   padding: 8px 12px;
   border-radius: 16px;
-  color: #A19BAE;
+  color: var(--text-muted);
   text-decoration: none;
   font-size: 11px;
   font-weight: 600;
@@ -185,13 +185,13 @@
 }
 
 .mobile-nav-item.active {
-  background: #F4EFFF;
-  color: #9C81F2;
+  background: var(--primary-light-bg, #F4EFFF);
+  color: var(--primary);
 }
 
 /* Purple Top Section (For Projects, Skills, Contact) */
 .mobile-purple-header {
-  background: linear-gradient(180deg, #8168DE 0%, #9C81F2 100%);
+  background: linear-gradient(180deg, var(--primary-dark, #8168DE) 0%, var(--primary) 100%);
   color: white;
   padding: 40px 20px 80px; /* Extra padding at bottom for overlap */
   border-bottom-left-radius: 32px;
@@ -219,7 +219,7 @@
 
 /* Contact Tab specific */
 .mobile-contact-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 24px;
   padding: 8px;
   display: flex;
@@ -233,8 +233,8 @@
   justify-content: space-between;
   padding: 16px 20px;
   border-radius: 16px;
-  background: white;
-  border: 1px solid #F0EDF6;
+  background: var(--card-bg);
+  border: 1px solid rgba(161, 129, 255, 0.15);
 }
 
 .mobile-contact-item-left {
@@ -247,8 +247,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #F4EFFF;
-  color: #8168DE;
+  background: var(--primary-light-bg, #F4EFFF);
+  color: var(--primary-dark, #8168DE);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -257,12 +257,12 @@
 .mobile-contact-text h4 {
   margin: 0;
   font-size: 14px;
-  color: #2E2A36;
+  color: var(--text-dark);
 }
 .mobile-contact-text p {
   margin: 4px 0 0;
   font-size: 12px;
-  color: #716982;
+  color: var(--text-muted);
 }
 
 .mobile-socials {
@@ -276,11 +276,11 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: white;
+  background: var(--card-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #8168DE;
+  color: var(--primary-dark, #8168DE);
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
@@ -309,7 +309,7 @@
 
 /* Skills Tab specific */
 .mobile-skills-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 24px;
   padding: 24px;
 }
@@ -320,7 +320,7 @@
 .mobile-skills-category h3 {
   font-size: 16px;
   margin: 0 0 16px;
-  color: #2E2A36;
+  color: var(--text-dark);
 }
 
 .mobile-skills-grid {
@@ -349,7 +349,7 @@
 }
 .mobile-search-input-wrapper {
   flex: 1;
-  background: white;
+  background: var(--card-bg);
   border-radius: 24px;
   padding: 12px 20px;
   display: flex;
@@ -368,12 +368,12 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: white;
+  background: var(--card-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
-  color: #8168DE;
+  color: var(--primary-dark, #8168DE);
 }
 
 .mobile-featured-project {
@@ -419,7 +419,7 @@
 }
 
 .mobile-project-list {
-  background: white;
+  background: var(--card-bg);
   border-radius: 24px;
   padding: 20px;
 }
@@ -437,7 +437,7 @@
 }
 .mobile-project-list-header span {
   font-size: 13px;
-  color: #8168DE;
+  color: var(--primary-dark, #8168DE);
   font-weight: 600;
 }
 
@@ -446,7 +446,7 @@
   align-items: center;
   gap: 16px;
   padding: 12px 0;
-  border-bottom: 1px solid #F0EDF6;
+  border-bottom: 1px solid rgba(161, 129, 255, 0.15);
 }
 .mobile-project-item:last-child {
   border-bottom: none;
@@ -467,15 +467,15 @@
 .mobile-project-item-info p {
   margin: 0 0 8px;
   font-size: 11px;
-  color: #716982;
+  color: var(--text-muted);
 }
 .mobile-project-item-tags {
   display: flex;
   gap: 6px;
 }
 .mobile-project-item-tags span {
-  background: #F4EFFF;
-  color: #8168DE;
+  background: var(--primary-light-bg, #F4EFFF);
+  color: var(--primary-dark, #8168DE);
   font-size: 10px;
   padding: 4px 8px;
   border-radius: 6px;
@@ -483,7 +483,7 @@
 
 /* About Tab Specific */
 .mobile-about-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 16px;
   padding: 20px;
   display: flex;
@@ -500,8 +500,8 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: #F4EFFF;
-  color: #8168DE;
+  background: var(--primary-light-bg, #F4EFFF);
+  color: var(--primary-dark, #8168DE);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -510,11 +510,11 @@
 .mobile-about-item-text h4 {
   margin: 0 0 4px;
   font-size: 12px;
-  color: #716982;
+  color: var(--text-muted);
 }
 .mobile-about-item-text p {
   margin: 0;
   font-size: 14px;
-  color: #2E2A36;
+  color: var(--text-dark);
   font-weight: 500;
 }

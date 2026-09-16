@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
+  --hero-gradient-start: #E6DCFF;
+  --hero-gradient-end: #F5F0FF;
+  --primary-light-bg: #F4EFFF;
+  --primary-dark: #8168DE;
   --bg-color: #F8F0FC;
   --sidebar-bg: #9C81F2;
   --sidebar-text: #FFFFFF;
@@ -23,6 +27,10 @@
 }
 
 .dark-theme {
+  --hero-gradient-start: #2D2446;
+  --hero-gradient-end: #1A1625;
+  --primary-light-bg: #2D2446;
+  --primary-dark: #B8A1FF;
   --bg-color: #1A1625;
   --sidebar-bg: #2D2446;
   --sidebar-text: #FFFFFF;
