@@ -20,7 +20,7 @@ const MobileView = () => {
 
       <section className="mobile-hero-section">
         <div className="mobile-avatar-wrapper">
-          <img src={data.hero.avatarImg} alt={data.hero.name} />
+          <img src={data.hero.avatarImg} alt={data.hero.name} style={{ borderRadius: '0', objectFit: 'contain' }} />
         </div>
         <h1>I'm {data.hero.name}</h1>
         <p className="mobile-bio">{data.hero.role}</p>
