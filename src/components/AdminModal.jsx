@@ -51,7 +51,7 @@ const AdminModal = ({ isOpen, onClose, title, fields, initialData, onSave }) => 
                     const data = new FormData();
                     data.append('file', file);
                     try {
-                      const API_URL = import.meta.env.VITE_API_URL || 'https://mine-portfolio-api.onrender.com';
+                      const API_URL = import.meta.env.VITE_API_URL || '';
                       const token = localStorage.getItem('adminToken');
                       const res = await fetch(`${API_URL}/api/upload`, { 
                         method: 'POST', 

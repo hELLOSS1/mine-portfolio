@@ -10,7 +10,7 @@ const PortfolioContext = createContext();
 
 export const usePortfolio = () => useContext(PortfolioContext);
 
-const API_URL = import.meta.env.MODE === 'production' ? (import.meta.env.VITE_API_URL || 'https://mine-portfolio-api.onrender.com') : '';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 // Use imported JSON but fallback to some defaults if missing (though it shouldn't be)
 const defaultData = defaultDataJson || {};
