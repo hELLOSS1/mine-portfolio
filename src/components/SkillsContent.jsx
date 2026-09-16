@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import './MainContent.css';
-import { Search, Moon, Sun, ChevronUp, Code2 } from 'lucide-react';
+import { Search, Moon, Sun, ChevronUp, Code2, BookOpen, Monitor, Database, Wrench, Layers } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 
 const SkillsContent = () => {
@@ -49,26 +49,67 @@ const SkillsContent = () => {
           </div>
         </header>
 
-        <section className="flex-col clay-card" style={{ boxShadow: 'none', background: 'var(--card-bg)', marginBottom: '20px' }}>
-          <h3 className="flex-row gap-2" style={{ fontSize: '18px', marginBottom: '24px' }}>
-            <div className="title-icon-small" style={{ background: '#F4EFFF', padding: '6px', borderRadius: '8px' }}><Code2 size={18} color="#A181FF"/></div> 
-            Technical Proficiency
-          </h3>
-          
-          <div className="skills-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
-            {data.skills.map((skill, index) => (
-              <div key={index} className="skill-item flex-col" style={{ gap: '8px' }}>
-                <div className="flex-row justify-between">
-                  <span className="skill-name" style={{ fontWeight: '500', color: 'var(--text-dark)' }}>{skill.name}</span>
-                  <span className="skill-percent" style={{ color: 'var(--text-muted)', fontSize: '14px' }}>{skill.percent}</span>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px', marginBottom: '20px' }}>
+          {data.skillCategories?.map((category) => {
+            const categorySkills = data.skills?.filter(s => s.category === category.name) || [];
+            if (categorySkills.length === 0) return null;
+
+            let Icon = Code2;
+            let iconColor = '#A181FF';
+            let iconBg = '#F4EFFF';
+
+            if (category.name === 'Core CS') {
+              Icon = BookOpen;
+              iconColor = '#4CAF50';
+              iconBg = '#E8F5E9';
+            } else if (category.name === 'Web Development') {
+              Icon = Monitor;
+              iconColor = '#2196F3';
+              iconBg = '#E3F2FD';
+            } else if (category.name === 'Database') {
+              Icon = Database;
+              iconColor = '#9C27B0';
+              iconBg = '#F3E5F5';
+            } else if (category.name === 'Tools') {
+              Icon = Wrench;
+              iconColor = '#F44336';
+              iconBg = '#FFEBEE';
+            } else if (category.name === 'Other') {
+              Icon = Layers;
+              iconColor = '#4CAF50';
+              iconBg = '#E8F5E9';
+            }
+
+            return (
+              <section key={category.id} className="flex-col clay-card" style={{ boxShadow: 'none', background: 'var(--card-bg)' }}>
+                <h3 className="flex-row gap-2" style={{ fontSize: '16px', marginBottom: '24px', fontWeight: '600' }}>
+                  <div className="title-icon-small" style={{ background: iconBg, padding: '6px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon size={16} color={iconColor}/>
+                  </div> 
+                  {category.name}
+                </h3>
+                
+                <div className="skills-list" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {categorySkills.map((skill, index) => (
+                    <div key={index} className="skill-item flex-row gap-4" style={{ alignItems: 'center' }}>
+                      {/* You can add individual skill icons here if wanted, or just the progress bar */}
+                      {/* The reference image shows an icon next to each skill. We can use a generic icon or omit it */}
+                      <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: skill.color || '#F4EFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                         <span style={{ fontSize: '10px', color: 'white', fontWeight: 'bold' }}>{skill.name?.charAt(0) || ''}</span>
+                      </div>
+                      
+                      <div className="flex-col" style={{ flex: 1, gap: '6px' }}>
+                        <div className="flex-row justify-between">
+                          <span className="skill-name" style={{ fontWeight: '500', color: 'var(--text-dark)', fontSize: '13px' }}>{skill.name}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="progress-bg neumorphic-inset-small" style={{ height: '8px', background: 'rgba(0,0,0,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
-                  <div className="progress-fill" style={{ width: skill.percent, background: skill.color, height: '100%', borderRadius: '4px' }}></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+              </section>
+            );
+          })}
+        </div>
       </div>
 
       <footer className="footer-banner clay-purple-box flex-row justify-between" style={{ alignItems: 'center', padding: '16px 32px', marginTop: '20px' }}>

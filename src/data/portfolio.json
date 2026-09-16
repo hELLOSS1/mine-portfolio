@@ -5,7 +5,7 @@
     "role": "Aspiring Software Engineer",
     "shortBio": "Welcome to my interactive portfolio. I'm passionate about coding and software engineering. Feel free to explore my projects and experience.",
     "bio": "I build beautiful, responsive and user-friendly web applications with modern technologies.",
-    "avatarImg": "/src/assets/avatar_mia.jpg",
+    "avatarImg": "http://localhost:3001/uploads/1789594392159-842257699.png",
     "plantImg": "/src/assets/3d_plant.jpg"
   },
   "stats": {
@@ -15,25 +15,104 @@
     "certifications": "6"
   },
   "projects": [
-    { "id": 1, "title": "TaskFlow", "desc": "A productivity tool for team collaboration.", "img": "/src/assets/taskflow.jpg", "tags": ["React", "Node.js", "MongoDB"] },
-    { "id": 2, "title": "GreenShop", "desc": "E-commerce website for plants & pots.", "img": "/src/assets/greenshop.jpg", "tags": ["React", "Stripe", "Tailwind"] },
-    { "id": 3, "title": "Weather App", "desc": "Real-time weather forecast application.", "img": "/src/assets/weatherapp.jpg", "tags": ["JavaScript", "API", "CSS"] }
+    {
+      "id": 1,
+      "title": "TaskFlow",
+      "desc": "A productivity tool for team collaboration.",
+      "img": "/src/assets/taskflow.jpg",
+      "tags": [
+        "React",
+        "Node.js",
+        "MongoDB"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "GreenShop",
+      "desc": "E-commerce website for plants & pots.",
+      "img": "/src/assets/greenshop.jpg",
+      "tags": [
+        "React",
+        "Stripe",
+        "Tailwind"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Weather App",
+      "desc": "Real-time weather forecast application.",
+      "img": "/src/assets/weatherapp.jpg",
+      "tags": [
+        "JavaScript",
+        "API",
+        "CSS"
+      ]
+    }
   ],
   "experience": [
-    { "id": 1, "role": "Frontend Developer", "company": "Tech Solutions Pvt. Ltd.", "date": "Mar 2023 - Present", "color": "#F7B565" },
-    { "id": 2, "role": "Web Developer Intern", "company": "CodeCraft Labs", "date": "Jun 2022 - Feb 2023", "color": "#8E74E6" },
-    { "id": 3, "role": "Freelance Developer", "company": "Self Employed", "date": "Jan 2021 - May 2022", "color": "#8E74E6" }
+    {
+      "id": 1,
+      "role": "Frontend Developer",
+      "company": "Tech Solutions Pvt. Ltd.",
+      "date": "Mar 2023 - Present",
+      "color": "#F7B565"
+    },
+    {
+      "id": 2,
+      "role": "Web Developer Intern",
+      "company": "CodeCraft Labs",
+      "date": "Jun 2022 - Feb 2023",
+      "color": "#8E74E6"
+    },
+    {
+      "id": 3,
+      "role": "Freelance Developer",
+      "company": "Self Employed",
+      "date": "Jan 2021 - May 2022",
+      "color": "#8E74E6"
+    }
   ],
   "certificates": [
-    { "id": 1, "name": "React.js", "color": "#F4EFFF" },
-    { "id": 2, "name": "Node.js", "color": "#E8F5E9" },
-    { "id": 3, "name": "MongoDB", "color": "#EEF6FE" },
-    { "id": 4, "name": "Tailwind CSS", "color": "#FCEEF5" }
+    {
+      "id": 1,
+      "name": "React.js",
+      "color": "#F4EFFF"
+    },
+    {
+      "id": 2,
+      "name": "Node.js",
+      "color": "#E8F5E9"
+    },
+    {
+      "id": 3,
+      "name": "MongoDB",
+      "color": "#EEF6FE"
+    },
+    {
+      "id": 4,
+      "name": "Tailwind CSS",
+      "color": "#FCEEF5"
+    }
   ],
   "socialLinks": [
-    { "id": 1, "platform": "GitHub", "url": "https://github.com", "color": "#F4EFFF" },
-    { "id": 2, "platform": "LinkedIn", "url": "https://linkedin.com", "color": "#EEF6FE" },
-    { "id": 3, "platform": "Twitter", "url": "https://twitter.com", "color": "#FCEEF5" }
+    {
+      "id": 1,
+      "platform": "GitHub",
+      "url": "https://github.comgfgfg",
+      "color": "#F4EFFF"
+    },
+    {
+      "id": 2,
+      "platform": "LinkedIn",
+      "url": "https://linkedin.com",
+      "color": "#EEF6FE"
+    },
+    {
+      "id": 3,
+      "platform": "Twitter",
+      "url": "https://twitter.com",
+      "color": "#FCEEF5"
+    }
   ],
   "aboutMe": {
     "location": "India",
@@ -47,17 +126,198 @@
     "interests": "Beyond coding, I enjoy reading tech blogs, contributing to open-source projects, and exploring the latest trends in UI/UX design."
   },
   "skills": [
-    { "name": "HTML / CSS", "percent": "90%", "color": "linear-gradient(90deg, #A890F0, #8E74E6)" },
-    { "name": "JavaScript", "percent": "85%", "color": "linear-gradient(90deg, #F98FB9, #F672A7)" },
-    { "name": "React.js", "percent": "80%", "color": "linear-gradient(90deg, #F7B565, #F59E3D)" },
-    { "name": "Node.js", "percent": "75%", "color": "linear-gradient(90deg, #76D89D, #5DBE84)" },
-    { "name": "MongoDB", "percent": "70%", "color": "linear-gradient(90deg, #6BB5F6, #4EA1F0)" },
-    { "name": "Tailwind CSS", "percent": "85%", "color": "linear-gradient(90deg, #A890F0, #8E74E6)" }
+    {
+      "category": "Programming Language",
+      "isNew": true,
+      "name": "C",
+      "id": 1789592698291
+    },
+    {
+      "category": "Programming Language",
+      "isNew": true,
+      "name": "SQL",
+      "id": 1789592754051
+    },
+    {
+      "category": "Programming Language",
+      "isNew": true,
+      "name": "Java",
+      "id": 1789592770305
+    },
+    {
+      "category": "Programming Language",
+      "isNew": true,
+      "name": "JavaScript",
+      "id": 1789592783635
+    },
+    {
+      "category": "Programming Language",
+      "isNew": true,
+      "name": "Python",
+      "id": 1789592796745
+    },
+    {
+      "category": "Core CS",
+      "isNew": true,
+      "name": "DSA",
+      "id": 1789592831563
+    },
+    {
+      "category": "Core CS",
+      "isNew": true,
+      "name": "OOP",
+      "id": 1789592846819
+    },
+    {
+      "category": "Core CS",
+      "isNew": true,
+      "name": "DBMS",
+      "id": 1789592861428
+    },
+    {
+      "category": "Core CS",
+      "isNew": true,
+      "name": "Operating Systems",
+      "id": 1789592874425
+    },
+    {
+      "category": "Core CS",
+      "isNew": true,
+      "name": "Computer Networks",
+      "id": 1789592886116
+    },
+    {
+      "category": "Core CS",
+      "isNew": true,
+      "name": "Software Engineering",
+      "id": 1789592899273
+    },
+    {
+      "category": "Web Development",
+      "isNew": true,
+      "name": "HTML",
+      "id": 1789592998003
+    },
+    {
+      "category": "Web Development",
+      "isNew": true,
+      "name": "CSS",
+      "id": 1789593014010
+    },
+    {
+      "category": "Web Development",
+      "isNew": true,
+      "name": "React.js",
+      "id": 1789593025348
+    },
+    {
+      "category": "Web Development",
+      "isNew": true,
+      "name": "Node.js",
+      "id": 1789593035798
+    },
+    {
+      "category": "Web Development",
+      "isNew": true,
+      "name": "Express.js",
+      "id": 1789593048100
+    },
+    {
+      "category": "Web Development",
+      "isNew": true,
+      "name": "REST APIs",
+      "id": 1789593063640
+    },
+    {
+      "category": "Web Development",
+      "isNew": true,
+      "name": "Responsive Web Design",
+      "id": 1789593077537
+    },
+    {
+      "category": "Database",
+      "isNew": true,
+      "name": "MySQL",
+      "id": 1789593097018
+    },
+    {
+      "category": "Database",
+      "isNew": true,
+      "name": "PostgreSQL",
+      "id": 1789593106559
+    },
+    {
+      "category": "Database",
+      "isNew": true,
+      "name": "SQL",
+      "id": 1789593122389
+    },
+    {
+      "category": "Database",
+      "isNew": true,
+      "name": "JDBC",
+      "id": 1789593134684
+    },
+    {
+      "category": "AI Tools & Technologies",
+      "isNew": true,
+      "name": "Gemini",
+      "id": 1789593189978
+    },
+    {
+      "category": "AI Tools & Technologies",
+      "isNew": true,
+      "name": "Antigravity",
+      "id": 1789593201678
+    },
+    {
+      "category": "AI Tools & Technologies",
+      "isNew": true,
+      "name": "Prompt Engineering",
+      "id": 1789593213176
+    },
+    {
+      "category": "AI Tools & Technologies",
+      "isNew": true,
+      "name": "AI-Assisted Development",
+      "id": 1789593223148
+    },
+    {
+      "category": "AI Tools & Technologies",
+      "isNew": true,
+      "name": "API Integration",
+      "id": 1789593259450
+    }
   ],
   "visibility": {
     "showProjects": true,
     "showExperience": true,
     "showAboutMe": true,
     "showSkills": true
-  }
+  },
+  "skillCategories": [
+    {
+      "name": "Programming Language",
+      "id": 1789589283033
+    },
+    {
+      "name": "Core CS",
+      "id": 1789589365864
+    },
+    {
+      "name": "Web Development",
+      "desc": "",
+      "id": 1789592943600
+    },
+    {
+      "name": "Database",
+      "desc": "",
+      "id": 1789592953883
+    },
+    {
+      "name": "AI Tools & Technologies",
+      "desc": "",
+      "id": 1789593177742
+    }
+  ]
 }

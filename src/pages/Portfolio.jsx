@@ -6,6 +6,7 @@ import SkillsContent from '../components/SkillsContent';
 import ProjectsContent from '../components/ProjectsContent';
 import ExperienceContent from '../components/ExperienceContent';
 import OtherContent from '../components/OtherContent';
+import ContactContent from '../components/ContactContent';
 import RightWidgets from '../components/RightWidgets';
 import MobileView from '../components/MobileView';
 import { usePortfolio } from '../context/PortfolioContext';
@@ -36,7 +37,8 @@ const Portfolio = () => {
       {activeTab === 'Skills' && <SkillsContent />}
       {activeTab === 'Projects' && <ProjectsContent />}
       {activeTab === 'Experience' && <ExperienceContent />}
-      {['Achievements', 'Contact Me', 'Resume', 'Blog'].includes(activeTab) && <OtherContent tab={activeTab} />}
+      {activeTab === 'Contact Me' && <ContactContent />}
+      {['Achievements', 'Resume', 'Blog'].includes(activeTab) && <OtherContent tab={activeTab} />}
       {isDashboard && <RightWidgets />}
     </div>
   );

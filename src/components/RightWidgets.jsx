@@ -1,9 +1,10 @@
 import React from 'react';
 import './RightWidgets.css';
-import { Send, Mail, User, Code, Code2 } from 'lucide-react';
+import { Send, Mail, User, Code, Code2, Link2 } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 
 const RightWidgets = () => {
+  const { data } = usePortfolio();
   return (
     <aside className="right-widgets" style={{ overflowY: 'auto', paddingRight: '4px', height: '100%' }}>
       
@@ -20,45 +21,48 @@ const RightWidgets = () => {
         </p>
         
         <div className="info-list flex-col gap-6" style={{ flex: 1, gap: '24px' }}>
-          <div className="info-item flex-row gap-4" style={{ alignItems: 'center' }}>
-            <div className="info-icon-wrapper" style={{ background: '#F4EFFF', padding: '10px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Mail size={18} color="#A181FF" />
+          {data?.aboutMe?.email && (
+            <div className="info-item flex-row gap-4" style={{ alignItems: 'center' }}>
+              <div className="info-icon-wrapper" style={{ background: '#F4EFFF', padding: '10px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Mail size={18} color="#A181FF" />
+              </div>
+              <div className="info-text flex-col">
+                <span className="label" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-dark)' }}>Email</span>
+                <a href={`mailto:${data.aboutMe.email}`} className="value" style={{ fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'none' }}>{data.aboutMe.email}</a>
+              </div>
             </div>
-            <div className="info-text flex-col">
-              <span className="label" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-dark)' }}>Email</span>
-              <a href="mailto:writestoashish@gmail.com" className="value" style={{ fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'none' }}>writestoashish@gmail.com</a>
-            </div>
-          </div>
+          )}
           
-          <div className="info-item flex-row gap-4" style={{ alignItems: 'center' }}>
-            <div className="info-icon-wrapper" style={{ background: '#EEF6FE', padding: '10px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <User size={18} color="#6BB5F6" />
-            </div>
-            <div className="info-text flex-col">
-              <span className="label" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-dark)' }}>LinkedIn</span>
-              <a href="https://linkedin.com/in/ashish-gupta-a31455304/" target="_blank" rel="noreferrer" className="value" style={{ fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'none' }}>linkedin.com/in/ashish-gupta-a31455304/</a>
-            </div>
-          </div>
-          
-          <div className="info-item flex-row gap-4" style={{ alignItems: 'center' }}>
-            <div className="info-icon-wrapper" style={{ background: '#F4F4F5', padding: '10px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Code size={18} color="#27272A" />
-            </div>
-            <div className="info-text flex-col">
-              <span className="label" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-dark)' }}>GitHub</span>
-              <a href="https://github.com/SANDIPstar" target="_blank" rel="noreferrer" className="value" style={{ fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'none' }}>github.com/SANDIPstar</a>
-            </div>
-          </div>
-          
-          <div className="info-item flex-row gap-4" style={{ alignItems: 'center' }}>
-            <div className="info-icon-wrapper" style={{ background: '#FEF6EC', padding: '10px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Code2 size={18} color="#F7B565" />
-            </div>
-            <div className="info-text flex-col">
-              <span className="label" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-dark)' }}>LeetCode</span>
-              <a href="https://leetcode.com/u/Ashish_Gupta1/" target="_blank" rel="noreferrer" className="value" style={{ fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'none' }}>leetcode.com/u/Ashish_Gupta1/</a>
-            </div>
-          </div>
+          {data?.socialLinks?.map((link) => {
+            let Icon = Link2;
+            let iconColor = '#A181FF';
+            
+            if (link.platform.toLowerCase() === 'linkedin') {
+              Icon = User;
+              iconColor = '#6BB5F6';
+            } else if (link.platform.toLowerCase() === 'github') {
+              Icon = Code;
+              iconColor = '#27272A';
+            } else if (link.platform.toLowerCase() === 'leetcode') {
+              Icon = Code2;
+              iconColor = '#F7B565';
+            } else if (link.platform.toLowerCase() === 'twitter') {
+              Icon = Code; // You can import Twitter icon if available
+              iconColor = '#1DA1F2';
+            }
+
+            return (
+              <div key={link.id} className="info-item flex-row gap-4" style={{ alignItems: 'center' }}>
+                <div className="info-icon-wrapper" style={{ background: link.color || '#F4F4F5', padding: '10px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icon size={18} color={iconColor} />
+                </div>
+                <div className="info-text flex-col">
+                  <span className="label" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-dark)' }}>{link.platform}</span>
+                  <a href={link.url} target="_blank" rel="noreferrer" className="value" style={{ fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'none' }}>{link.url.replace(/^https?:\/\/(www\.)?/, '')}</a>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         <div className="bottom-connect mt-6 pt-6" style={{ borderTop: '1px dashed rgba(161, 129, 255, 0.2)', marginTop: '48px', paddingTop: '24px', position: 'relative' }}>

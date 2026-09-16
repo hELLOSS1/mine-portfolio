@@ -4,7 +4,7 @@ import { usePortfolio } from '../context/PortfolioContext';
 import AdminSidebar from '../components/AdminSidebar';
 import AdminHeader from '../components/AdminHeader';
 import AdminModal from '../components/AdminModal';
-import { User, Folder, Code2, Briefcase, Award, Palette, Link as LinkIcon, Edit2, Trash2, Plus, Upload, CheckCircle2 } from 'lucide-react';
+import { User, Folder, Code2, Briefcase, Award, Palette, Link as LinkIcon, Edit2, Trash2, Plus, Upload, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -13,6 +13,11 @@ const AdminDashboard = () => {
   
   const [isSaving, setIsSaving] = useState(false);
   const [modalState, setModalState] = useState({ isOpen: false, type: null, data: null });
+  const [expandedCategories, setExpandedCategories] = useState({});
+
+  const toggleCategory = (catName) => {
+    setExpandedCategories(prev => ({ ...prev, [catName]: !prev[catName] }));
+  };
 
   const handleSaveAll = async () => {
     setIsSaving(true);
@@ -56,8 +61,8 @@ const AdminDashboard = () => {
       processedData.tags = processedData.tags.split(',').map(t => t.trim()).filter(Boolean);
     }
 
-    if (modalState.data) {
-      updateArrayItem(modalState.type, modalState.data.id, processedData);
+    if (modalState.data && !modalState.data.isNew) {
+      updateArrayItem(modalState.type, modalState.data.id || modalState.data.name, processedData);
     } else {
       addArrayItem(modalState.type, processedData);
     }
@@ -90,8 +95,15 @@ const AdminDashboard = () => {
           title: 'Skill',
           fields: [
             { name: 'name', label: 'Skill Name' },
-            { name: 'percent', label: 'Percentage (e.g. 80%)' },
-            { name: 'color', label: 'Color / Gradient' }
+            { name: 'category', label: 'Category' }
+          ]
+        };
+      case 'skillCategories':
+        return {
+          title: 'Skill Category',
+          fields: [
+            { name: 'name', label: 'Category Name' },
+            { name: 'desc', label: 'Description', type: 'textarea' }
           ]
         };
       case 'certificates':
@@ -331,30 +343,70 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            {/* Skills Management */}
+            {/* Unified Skills Management */}
             <div className="clay-card">
               <div className="admin-card-header">
-                <h3><Code2 size={16} color="#A181FF" /> Skills Management</h3>
+                <h3><Code2 size={16} color="#A181FF" /> Skills</h3>
               </div>
-              <span style={{ fontSize: '12px', color: 'var(--text-dark)', fontWeight: 'bold', display: 'block', marginBottom: '16px' }}>• {data.skills.length} skills</span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {data.skills.map(skill => (
-                  <div key={skill.name} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 'bold' }}>
-                      <span>{skill.name}</span>
-                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        <span>{skill.percent}</span>
-                        <Edit2 size={12} color="var(--primary)" style={{ cursor: 'pointer' }} onClick={() => openModal('skills', skill)} />
-                        <Trash2 size={12} color="#FF4757" style={{ cursor: 'pointer' }} onClick={() => deleteArrayItem('skills', skill.id || skill.name)} />
+              <span style={{ fontSize: '12px', color: 'var(--text-dark)', fontWeight: 'bold', display: 'block', marginBottom: '16px' }}>• {data.skillCategories?.length || 0} categories, {data.skills?.length || 0} skills</span>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {data.skillCategories?.map(cat => {
+                  const categorySkills = data.skills?.filter(s => s.category === cat.name) || [];
+                  const isExpanded = expandedCategories[cat.name];
+                  
+                  return (
+                    <div key={cat.id} style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-color)', padding: '12px', borderRadius: '8px', gap: '12px', border: '1px solid var(--border-color, rgba(161, 129, 255, 0.1))' }}>
+                      
+                      {/* Category Header */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                          <div style={{ background: '#F4EFFF', padding: '8px', borderRadius: '8px' }}>
+                            <Code2 size={16} color="var(--primary)" />
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <span style={{ fontSize: '14px', fontWeight: 'bold', color: 'var(--text-dark)' }}>{cat.name}</span>
+                            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{cat.desc || 'No description provided.'}</span>
+                          </div>
+                        </div>
+                        
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', background: '#F4EFFF', padding: '4px 8px', borderRadius: '8px' }}>
+                          <Plus size={12} color="var(--primary)" style={{ cursor: 'pointer' }} onClick={() => openModal('skills', { category: cat.name, isNew: true })} title="Add Skill" />
+                          <Edit2 size={12} color="var(--primary)" style={{ cursor: 'pointer' }} onClick={() => openModal('skillCategories', cat)} title="Edit Category" />
+                          <Trash2 size={12} color="#FF4757" style={{ cursor: 'pointer' }} onClick={() => deleteArrayItem('skillCategories', cat.id)} title="Delete Category" />
+                          <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }} onClick={() => toggleCategory(cat.name)}>
+                            {isExpanded ? <ChevronUp size={14} color="var(--primary)" /> : <ChevronDown size={14} color="var(--primary)" />}
+                          </div>
+                        </div>
                       </div>
+
+                      {/* Skills under this category */}
+                      {isExpanded && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '12px', borderLeft: '2px solid rgba(161, 129, 255, 0.2)', marginTop: '8px' }}>
+                          {categorySkills.map((skill, index) => (
+                            <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 'bold' }}>
+                                <span>{skill.name}</span>
+                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                  <Edit2 size={12} color="var(--primary)" style={{ cursor: 'pointer' }} onClick={() => openModal('skills', skill)} />
+                                  <Trash2 size={12} color="#FF4757" style={{ cursor: 'pointer' }} onClick={() => deleteArrayItem('skills', skill.id || skill.name)} />
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                          {categorySkills.length === 0 && (
+                            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>No skills added yet.</span>
+                          )}
+                        </div>
+                      )}
                     </div>
-                    <div style={{ width: '100%', height: '6px', background: '#eee', borderRadius: '3px' }}>
-                      <div style={{ width: skill.percent, height: '100%', background: skill.color, borderRadius: '3px' }}></div>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-              <button className="admin-btn-small admin-btn-outline" onClick={() => openModal('skills')} style={{ width: '100%', justifyContent: 'center', marginTop: '16px', padding: '8px' }}><Plus size={14}/> Add Skill</button>
+              
+              <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
+                 <button className="admin-btn-small admin-btn-outline" onClick={() => openModal('skillCategories')} style={{ width: '100%', justifyContent: 'center', padding: '8px' }}><Plus size={14}/> Add Category</button>
+              </div>
             </div>
 
             {/* Social Links */}

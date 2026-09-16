@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './MobileView.css';
-import { Home, Folder, Code2, User, MessageSquare, Search, Menu, Play, Download, MapPin, Mail, Phone, Crown, Filter, ChevronRight, Globe, Settings } from 'lucide-react';
+import { Home, Folder, Code2, User, MessageSquare, Search, Menu, Play, Download, MapPin, Mail, Phone, Crown, Filter, ChevronRight, Globe, Settings, BookOpen } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 
 const MobileView = () => {
@@ -20,13 +20,13 @@ const MobileView = () => {
 
       <section className="mobile-hero-section">
         <div className="mobile-avatar-wrapper">
-          <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(data.hero.name)}&background=9C81F2&color=fff&size=128`} alt={data.hero.name} style={{ borderRadius: '50%' }} />
+          <img src={data.hero.avatarImg} alt={data.hero.name} style={{ borderRadius: '0', objectFit: 'contain' }} />
         </div>
         <h1>I'm {data.hero.name}</h1>
         <p className="mobile-bio">{data.hero.role}</p>
         <div className="mobile-hero-buttons">
-          <button className="mobile-btn mobile-btn-primary"><Play size={16} fill="white" /> View My Work</button>
-          <button className="mobile-btn mobile-btn-white"><Download size={16} /> Download CV</button>
+          <button className="mobile-btn mobile-btn-primary" onClick={() => setActiveTab('Projects')}><Play size={16} fill="white" /> View My Work</button>
+          <button className="mobile-btn mobile-btn-white" onClick={() => { if(data.hero.resumePdf) window.open(data.hero.resumePdf, '_blank'); else alert('No CV available yet!'); }}><Download size={16} /> Download CV</button>
         </div>
       </section>
 
@@ -56,8 +56,9 @@ const MobileView = () => {
   );
 
   const renderProjects = () => {
-    const featuredProject = data.projects[0];
-    const otherProjects = data.projects.slice(1);
+    const filteredProjects = data.projects?.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.desc.toLowerCase().includes(searchQuery.toLowerCase())) || [];
+    const featuredProject = filteredProjects[0];
+    const otherProjects = filteredProjects.slice(1);
 
     return (
       <>
@@ -83,7 +84,7 @@ const MobileView = () => {
 
         <div className="mobile-purple-overlap" style={{ marginTop: '-20px' }}>
           {featuredProject && (
-            <div className="mobile-featured-project">
+            <div className="mobile-featured-project" onClick={() => { if(featuredProject.url || featuredProject.github) window.open(featuredProject.url || featuredProject.github, '_blank'); }}>
               <img src={featuredProject.img} alt={featuredProject.title} />
               <div className="mobile-featured-overlay">
                 <span style={{ background: 'rgba(255,255,255,0.2)', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', alignSelf: 'flex-start', marginBottom: '8px' }}>Featured</span>
@@ -106,7 +107,7 @@ const MobileView = () => {
             </div>
             
             {otherProjects.map(proj => (
-              <div className="mobile-project-item" key={proj.id}>
+              <div className="mobile-project-item" key={proj.id} onClick={() => { if(proj.url || proj.github) window.open(proj.url || proj.github, '_blank'); }}>
                 <img src={proj.img} alt={proj.title} className="mobile-project-item-img" />
                 <div className="mobile-project-item-info">
                   <h4>{proj.title}</h4>
@@ -132,63 +133,24 @@ const MobileView = () => {
       </div>
 
       <div className="mobile-purple-overlap mobile-skills-card">
-        <div className="mobile-skills-category">
-          <h3>Frontend</h3>
-          <div className="mobile-skills-grid">
-            <div className="mobile-skill-item" style={{ background: '#EEF6FE', color: '#6BB5F6' }}>
-              <Code2 size={24} />
-              <span>React</span>
-            </div>
-            <div className="mobile-skill-item" style={{ background: '#FCEEF5', color: '#F98FB9' }}>
-              <Code2 size={24} />
-              <span>HTML</span>
-            </div>
-            <div className="mobile-skill-item" style={{ background: '#F4EFFF', color: '#9C81F2' }}>
-              <Code2 size={24} />
-              <span>CSS</span>
-            </div>
-            <div className="mobile-skill-item" style={{ background: '#FEF6EC', color: '#F7B565' }}>
-              <Code2 size={24} />
-              <span>JavaScript</span>
-            </div>
-            <div className="mobile-skill-item" style={{ background: '#E0F7FA', color: '#26C6DA' }}>
-              <Code2 size={24} />
-              <span>Tailwind CSS</span>
-            </div>
-          </div>
-        </div>
+        {data.skillCategories?.map((category) => {
+          const categorySkills = data.skills?.filter(s => s.category === category.name) || [];
+          if (categorySkills.length === 0) return null;
 
-        <div className="mobile-skills-category">
-          <h3>Backend</h3>
-          <div className="mobile-skills-grid">
-            <div className="mobile-skill-item" style={{ background: '#E8F5E9', color: '#66BB6A' }}>
-              <Settings size={24} />
-              <span>Node.js</span>
+          return (
+            <div className="mobile-skills-category" key={category.id}>
+              <h3>{category.name}</h3>
+              <div className="mobile-skills-grid">
+                {categorySkills.map((skill, index) => (
+                  <div className="mobile-skill-item" key={index} style={{ background: skill.color ? skill.color.replace('linear-gradient(90deg, ', '').split(',')[0] + '33' : '#F4EFFF', color: skill.color ? skill.color.replace('linear-gradient(90deg, ', '').split(',')[0] : '#9C81F2' }}>
+                    <Code2 size={24} />
+                    <span>{skill.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="mobile-skill-item" style={{ background: '#F3E5F5', color: '#AB47BC' }}>
-              <Settings size={24} />
-              <span>Express.js</span>
-            </div>
-            <div className="mobile-skill-item" style={{ background: '#FFEBEE', color: '#EF5350' }}>
-              <Settings size={24} />
-              <span>Java</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="mobile-skills-category">
-          <h3>Database</h3>
-          <div className="mobile-skills-grid">
-            <div className="mobile-skill-item" style={{ background: '#E8F5E9', color: '#66BB6A' }}>
-              <Folder size={24} />
-              <span>MongoDB</span>
-            </div>
-            <div className="mobile-skill-item" style={{ background: '#E1F5FE', color: '#29B6F6' }}>
-              <Folder size={24} />
-              <span>MySQL</span>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </>
   );
@@ -202,40 +164,40 @@ const MobileView = () => {
 
       <div className="mobile-purple-overlap mobile-contact-card">
         
-        <div className="mobile-contact-item" style={{ background: 'linear-gradient(90deg, #9C81F2 0%, #B8A1FF 100%)', color: 'white', border: 'none' }}>
+        <div className="mobile-contact-item" style={{ background: 'linear-gradient(90deg, #9C81F2 0%, #B8A1FF 100%)', color: 'white', border: 'none', cursor: 'pointer' }} onClick={() => window.location.href = `mailto:${data.aboutMe?.email || ''}`}>
           <div className="mobile-contact-item-left">
             <div className="mobile-contact-icon" style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}>
               <Mail size={20} />
             </div>
             <div className="mobile-contact-text">
               <h4 style={{ color: 'white' }}>Email Me</h4>
-              <p style={{ color: 'rgba(255,255,255,0.8)' }}>{data.aboutMe.email}</p>
+              <p style={{ color: 'rgba(255,255,255,0.8)' }}>{data.aboutMe?.email}</p>
             </div>
           </div>
           <ChevronRight size={20} color="white" />
         </div>
 
-        <div className="mobile-contact-item">
+        <div className="mobile-contact-item" style={{ cursor: 'pointer' }} onClick={() => window.location.href = `tel:${data.aboutMe?.phone || '+919876543210'}`}>
           <div className="mobile-contact-item-left">
             <div className="mobile-contact-icon">
               <Phone size={20} />
             </div>
             <div className="mobile-contact-text">
               <h4>Call Me</h4>
-              <p>+91 98765 43210</p>
+              <p>{data.aboutMe?.phone || '+91 98765 43210'}</p>
             </div>
           </div>
           <ChevronRight size={20} color="#A19BAE" />
         </div>
 
-        <div className="mobile-contact-item">
+        <div className="mobile-contact-item" style={{ cursor: 'pointer' }} onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(data.aboutMe?.location || '')}`, '_blank')}>
           <div className="mobile-contact-item-left">
             <div className="mobile-contact-icon">
               <MapPin size={20} />
             </div>
             <div className="mobile-contact-text">
               <h4>Location</h4>
-              <p>{data.aboutMe.location}</p>
+              <p>{data.aboutMe?.location}</p>
             </div>
           </div>
           <ChevronRight size={20} color="#A19BAE" />
@@ -246,12 +208,14 @@ const MobileView = () => {
         </div>
 
         <div className="mobile-socials">
-          <button className="mobile-social-btn" style={{ color: '#333' }}><Globe size={20} /></button>
-          <button className="mobile-social-btn" style={{ color: '#0A66C2' }}><Globe size={20} /></button>
-          <button className="mobile-social-btn" style={{ color: '#1DA1F2' }}><Globe size={20} /></button>
+          {data.socialLinks?.map((social, index) => (
+            <button key={index} className="mobile-social-btn" style={{ color: '#5C5272', cursor: 'pointer' }} onClick={() => window.open(social.url, '_blank')} title={social.platform}>
+              <Globe size={20} />
+            </button>
+          ))}
         </div>
 
-        <button className="mobile-hire-me-btn">
+        <button className="mobile-hire-me-btn" style={{ cursor: 'pointer' }} onClick={() => window.location.href = `mailto:${data.aboutMe?.email || ''}?subject=Hire Me`}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
              <div style={{ background: 'rgba(255,255,255,0.2)', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Crown size={20} color="white" />
@@ -276,33 +240,74 @@ const MobileView = () => {
       </div>
 
       <div className="mobile-purple-overlap mobile-about-card">
-        <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>
-          {data.hero.bio}
-        </p>
-
-        <div className="mobile-about-item" style={{ marginTop: '16px' }}>
-          <div className="mobile-about-item-icon"><MapPin size={20} /></div>
-          <div className="mobile-about-item-text">
-            <h4>LOCATION</h4>
-            <p>{data.aboutMe.location}</p>
+        
+        {data.aboutMe.description && (
+          <div className="mobile-about-section">
+            <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><User size={18} color="#A181FF"/> Introduction</h3>
+            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe.description}</p>
           </div>
-        </div>
+        )}
 
-        <div className="mobile-about-item">
-          <div className="mobile-about-item-icon"><Mail size={20} /></div>
-          <div className="mobile-about-item-text">
-            <h4>EMAIL</h4>
-            <p>{data.aboutMe.email}</p>
+        {data.aboutMe.background && (
+          <div className="mobile-about-section" style={{ marginTop: '20px' }}>
+            <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><BookOpen size={18} color="#F98FB9"/> My Background</h3>
+            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe.background}</p>
           </div>
-        </div>
+        )}
 
-        <div className="mobile-about-item">
-          <div className="mobile-about-item-icon"><User size={20} /></div>
-          <div className="mobile-about-item-text">
-            <h4>AGE</h4>
-            <p>{data.aboutMe.age}</p>
+        {data.aboutMe.education && (
+          <div className="mobile-about-section" style={{ marginTop: '20px' }}>
+            <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#F7B565"/> Education</h3>
+            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe.education}</p>
           </div>
-        </div>
+        )}
+
+        {data.aboutMe.careerGoals && (
+          <div className="mobile-about-section" style={{ marginTop: '20px' }}>
+            <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#6BB5F6"/> Career Goals</h3>
+            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe.careerGoals}</p>
+          </div>
+        )}
+
+        {data.aboutMe.interests && (
+          <div className="mobile-about-section" style={{ marginTop: '20px' }}>
+            <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#8E74E6"/> Interests</h3>
+            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe.interests}</p>
+          </div>
+        )}
+
+        {/* Fallback to original fields if the new desktop ones aren't filled */}
+        {!data.aboutMe.description && (
+          <>
+            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>
+              {data.hero.bio}
+            </p>
+
+            <div className="mobile-about-item" style={{ marginTop: '16px' }}>
+              <div className="mobile-about-item-icon"><MapPin size={20} /></div>
+              <div className="mobile-about-item-text">
+                <h4>LOCATION</h4>
+                <p>{data.aboutMe.location}</p>
+              </div>
+            </div>
+
+            <div className="mobile-about-item">
+              <div className="mobile-about-item-icon"><Mail size={20} /></div>
+              <div className="mobile-about-item-text">
+                <h4>EMAIL</h4>
+                <p>{data.aboutMe.email}</p>
+              </div>
+            </div>
+
+            <div className="mobile-about-item">
+              <div className="mobile-about-item-icon"><User size={20} /></div>
+              <div className="mobile-about-item-text">
+                <h4>AGE</h4>
+                <p>{data.aboutMe.age}</p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

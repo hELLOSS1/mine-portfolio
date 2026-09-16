@@ -47,9 +47,9 @@ const defaultData = {
     { id: 4, name: 'Tailwind CSS', color: '#FCEEF5' }
   ],
   socialLinks: [
-    { id: 1, platform: 'GitHub', url: 'https://github.com', color: '#F4EFFF' },
+    { id: 1, platform: 'GitHub', url: 'https://github.com', color: '#F4F4F5' },
     { id: 2, platform: 'LinkedIn', url: 'https://linkedin.com', color: '#EEF6FE' },
-    { id: 3, platform: 'Twitter', url: 'https://twitter.com', color: '#FCEEF5' }
+    { id: 3, platform: 'LeetCode', url: 'https://leetcode.com', color: '#FEF6EC' }
   ],
   aboutMe: {
     location: 'India',
@@ -57,13 +57,34 @@ const defaultData = {
     age: '22',
     education: 'B.Tech in CSE, Parul University'
   },
+  skillCategories: [
+    { id: 1, name: 'Programming Languages', desc: 'Languages I use for building software.' },
+    { id: 2, name: 'Core CS', desc: 'Data structures, algorithms, databases and operating systems.' },
+    { id: 3, name: 'Web Development', desc: 'Frontend and backend web technologies.' },
+    { id: 4, name: 'Database', desc: 'Relational and NoSQL databases.' },
+    { id: 5, name: 'Tools', desc: 'Development tools and platforms.' },
+    { id: 6, name: 'Other', desc: 'Additional skills and software.' }
+  ],
   skills: [
-    { name: 'HTML / CSS', percent: '90%', color: 'linear-gradient(90deg, #A890F0, #8E74E6)' },
-    { name: 'JavaScript', percent: '85%', color: 'linear-gradient(90deg, #F98FB9, #F672A7)' },
-    { name: 'React.js', percent: '80%', color: 'linear-gradient(90deg, #F7B565, #F59E3D)' },
-    { name: 'Node.js', percent: '75%', color: 'linear-gradient(90deg, #76D89D, #5DBE84)' },
-    { name: 'MongoDB', percent: '70%', color: 'linear-gradient(90deg, #6BB5F6, #4EA1F0)' },
-    { name: 'Tailwind CSS', percent: '85%', color: 'linear-gradient(90deg, #A890F0, #8E74E6)' }
+    { name: 'HTML / CSS', percent: '90%', color: 'linear-gradient(90deg, #A890F0, #8E74E6)', category: 'Web Development' },
+    { name: 'JavaScript', percent: '85%', color: 'linear-gradient(90deg, #F98FB9, #F672A7)', category: 'Programming Languages' },
+    { name: 'React.js', percent: '80%', color: 'linear-gradient(90deg, #F7B565, #F59E3D)', category: 'Web Development' },
+    { name: 'Node.js', percent: '75%', color: 'linear-gradient(90deg, #76D89D, #5DBE84)', category: 'Web Development' },
+    { name: 'MongoDB', percent: '70%', color: 'linear-gradient(90deg, #6BB5F6, #4EA1F0)', category: 'Database' },
+    { name: 'Tailwind CSS', percent: '85%', color: 'linear-gradient(90deg, #A890F0, #8E74E6)', category: 'Web Development' },
+    { name: 'Java', percent: '80%', color: 'linear-gradient(90deg, #A890F0, #8E74E6)', category: 'Programming Languages' },
+    { name: 'C', percent: '75%', color: 'linear-gradient(90deg, #A890F0, #8E74E6)', category: 'Programming Languages' },
+    { name: 'DSA', percent: '75%', color: 'linear-gradient(90deg, #76D89D, #5DBE84)', category: 'Core CS' },
+    { name: 'DBMS', percent: '70%', color: 'linear-gradient(90deg, #76D89D, #5DBE84)', category: 'Core CS' },
+    { name: 'Operating Systems', percent: '65%', color: 'linear-gradient(90deg, #76D89D, #5DBE84)', category: 'Core CS' },
+    { name: 'MySQL', percent: '80%', color: 'linear-gradient(90deg, #A890F0, #8E74E6)', category: 'Database' },
+    { name: 'SQL', percent: '75%', color: 'linear-gradient(90deg, #A890F0, #8E74E6)', category: 'Database' },
+    { name: 'Git', percent: '85%', color: 'linear-gradient(90deg, #F7B565, #F59E3D)', category: 'Tools' },
+    { name: 'GitHub', percent: '80%', color: 'linear-gradient(90deg, #F7B565, #F59E3D)', category: 'Tools' },
+    { name: 'VS Code', percent: '75%', color: 'linear-gradient(90deg, #F7B565, #F59E3D)', category: 'Tools' },
+    { name: 'Postman', percent: '70%', color: 'linear-gradient(90deg, #F7B565, #F59E3D)', category: 'Tools' },
+    { name: 'Power BI', percent: '75%', color: 'linear-gradient(90deg, #F98FB9, #F672A7)', category: 'Other' },
+    { name: 'Excel', percent: '70%', color: 'linear-gradient(90deg, #F98FB9, #F672A7)', category: 'Other' }
   ],
   visibility: {
     showProjects: true,

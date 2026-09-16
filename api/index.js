@@ -30,6 +30,9 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Serve local uploads
+app.use('/uploads', express.static(path.resolve('public/uploads')));
+
 // Setup file upload handling in memory
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -237,7 +240,28 @@ app.post('/api/upload', authMiddleware, upload.single('file'), async (req, res) 
   }
 
   if (!supabase) {
-    return res.status(500).json({ error: 'Supabase storage is not configured properly.' });
+    // Fallback to local storage if Supabase is not configured
+    try {
+      const fileExt = path.extname(req.file.originalname);
+      const fileName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${fileExt}`;
+      const uploadsDir = path.resolve('public/uploads');
+      
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+      
+      fs.writeFileSync(path.join(uploadsDir, fileName), req.file.buffer);
+      
+      // Determine the host for the return URL
+      const host = process.env.NODE_ENV === 'production' 
+        ? process.env.VITE_API_URL 
+        : `${req.protocol}://${req.get('host')}`;
+        
+      return res.json({ url: `${host}/uploads/${fileName}` });
+    } catch (error) {
+      console.error("Local upload error:", error);
+      return res.status(500).json({ error: "Failed to upload file locally." });
+    }
   }
 
   try {

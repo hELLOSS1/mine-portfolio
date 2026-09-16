@@ -90,21 +90,21 @@ export const PortfolioProvider = ({ children }) => {
     const newItem = { ...item, id: Date.now() };
     setData(prev => ({
       ...prev,
-      [section]: [...prev[section], newItem]
+      [section]: [...(prev[section] || []), newItem]
     }));
   };
 
-  const updateArrayItem = (section, id, updatedItem) => {
+  const updateArrayItem = (section, identifier, updatedItem) => {
     setData(prev => ({
       ...prev,
-      [section]: prev[section].map(item => item.id === id ? { ...item, ...updatedItem } : item)
+      [section]: (prev[section] || []).map(item => (item.id || item.name) === identifier ? { ...item, ...updatedItem } : item)
     }));
   };
 
-  const deleteArrayItem = (section, id) => {
+  const deleteArrayItem = (section, identifier) => {
     setData(prev => ({
       ...prev,
-      [section]: prev[section].filter(item => item.id !== id)
+      [section]: (prev[section] || []).filter(item => (item.id || item.name) !== identifier)
     }));
   };
 
