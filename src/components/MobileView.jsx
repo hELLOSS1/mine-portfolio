@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './MobileView.css';
-import { Home, Folder, Code2, User, MessageSquare, Search, Menu, Play, Download, MapPin, Mail, Phone, Crown, Filter, ChevronRight, Globe, Settings, BookOpen } from 'lucide-react';
+import { Home, Folder, Code2, User, MessageSquare, Search, Menu, Play, Download, MapPin, Mail, Phone, Crown, Filter, ChevronRight, Globe, Settings, BookOpen, GraduationCap, Target, Heart } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 
 const MobileView = () => {
@@ -239,33 +239,56 @@ const MobileView = () => {
         <p>A little bit about my background.</p>
       </div>
 
-      <div className="mobile-purple-overlap mobile-about-card">
-        
-        <div className="mobile-about-section">
-          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><User size={18} color="#A181FF"/> Introduction</h3>
-          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe?.description || data.hero?.bio}</p>
+      <div className="mobile-purple-overlap">
+        <div className="mobile-about-card">
+          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ background: '#F4EFFF', padding: '8px', borderRadius: '10px', display: 'flex' }}>
+              <User size={20} color="#A181FF"/>
+            </div>
+            Introduction
+          </h3>
+          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272', margin: 0 }}>{data.aboutMe?.description || data.hero?.bio}</p>
         </div>
+      </div>
 
-        <div className="mobile-about-section" style={{ marginTop: '20px' }}>
-          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><BookOpen size={18} color="#F98FB9"/> My Background</h3>
-          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe?.background}</p>
-        </div>
+      <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
+        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ background: '#FCEEF5', padding: '8px', borderRadius: '10px', display: 'flex' }}>
+            <BookOpen size={20} color="#F98FB9"/>
+          </div>
+          My Background
+        </h3>
+        <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272', margin: 0 }}>{data.aboutMe?.background}</p>
+      </div>
 
-        <div className="mobile-about-section" style={{ marginTop: '20px' }}>
-          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#F7B565"/> Education</h3>
-          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe?.education}</p>
-        </div>
+      <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
+        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ background: '#FEF6EC', padding: '8px', borderRadius: '10px', display: 'flex' }}>
+            <GraduationCap size={20} color="#F7B565"/>
+          </div>
+          Education
+        </h3>
+        <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272', margin: 0 }}>{data.aboutMe?.education}</p>
+      </div>
 
-        <div className="mobile-about-section" style={{ marginTop: '20px' }}>
-          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#6BB5F6"/> Career Goals</h3>
-          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe?.careerGoals}</p>
-        </div>
+      <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
+        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ background: '#EEF6FE', padding: '8px', borderRadius: '10px', display: 'flex' }}>
+            <Target size={20} color="#6BB5F6"/>
+          </div>
+          Career Goals
+        </h3>
+        <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272', margin: 0 }}>{data.aboutMe?.careerGoals}</p>
+      </div>
 
-        <div className="mobile-about-section" style={{ marginTop: '20px' }}>
-          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#8E74E6"/> Interests</h3>
-          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe?.interests}</p>
-        </div>
-
+      <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
+        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ background: '#F1EBF9', padding: '8px', borderRadius: '10px', display: 'flex' }}>
+            <Heart size={20} color="#8E74E6"/>
+          </div>
+          Interests
+        </h3>
+        <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272', margin: 0 }}>{data.aboutMe?.interests}</p>
       </div>
     </>
   );

@@ -9,3 +9,4 @@ portfolio.sqlite
 *.sqlite3
 data/
 uploads/
+!public/uploads/
