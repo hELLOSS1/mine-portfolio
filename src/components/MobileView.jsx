@@ -241,73 +241,31 @@ const MobileView = () => {
 
       <div className="mobile-purple-overlap mobile-about-card">
         
-        {data.aboutMe.description && (
-          <div className="mobile-about-section">
-            <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><User size={18} color="#A181FF"/> Introduction</h3>
-            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe.description}</p>
-          </div>
-        )}
+        <div className="mobile-about-section">
+          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><User size={18} color="#A181FF"/> Introduction</h3>
+          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe?.description || data.hero?.bio}</p>
+        </div>
 
-        {data.aboutMe.background && (
-          <div className="mobile-about-section" style={{ marginTop: '20px' }}>
-            <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><BookOpen size={18} color="#F98FB9"/> My Background</h3>
-            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe.background}</p>
-          </div>
-        )}
+        <div className="mobile-about-section" style={{ marginTop: '20px' }}>
+          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><BookOpen size={18} color="#F98FB9"/> My Background</h3>
+          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe?.background}</p>
+        </div>
 
-        {data.aboutMe.education && (
-          <div className="mobile-about-section" style={{ marginTop: '20px' }}>
-            <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#F7B565"/> Education</h3>
-            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe.education}</p>
-          </div>
-        )}
+        <div className="mobile-about-section" style={{ marginTop: '20px' }}>
+          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#F7B565"/> Education</h3>
+          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe?.education}</p>
+        </div>
 
-        {data.aboutMe.careerGoals && (
-          <div className="mobile-about-section" style={{ marginTop: '20px' }}>
-            <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#6BB5F6"/> Career Goals</h3>
-            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe.careerGoals}</p>
-          </div>
-        )}
+        <div className="mobile-about-section" style={{ marginTop: '20px' }}>
+          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#6BB5F6"/> Career Goals</h3>
+          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe?.careerGoals}</p>
+        </div>
 
-        {data.aboutMe.interests && (
-          <div className="mobile-about-section" style={{ marginTop: '20px' }}>
-            <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#8E74E6"/> Interests</h3>
-            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe.interests}</p>
-          </div>
-        )}
+        <div className="mobile-about-section" style={{ marginTop: '20px' }}>
+          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><Crown size={18} color="#8E74E6"/> Interests</h3>
+          <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>{data.aboutMe?.interests}</p>
+        </div>
 
-        {/* Fallback to original fields if the new desktop ones aren't filled */}
-        {!data.aboutMe.description && (
-          <>
-            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5C5272' }}>
-              {data.hero.bio}
-            </p>
-
-            <div className="mobile-about-item" style={{ marginTop: '16px' }}>
-              <div className="mobile-about-item-icon"><MapPin size={20} /></div>
-              <div className="mobile-about-item-text">
-                <h4>LOCATION</h4>
-                <p>{data.aboutMe.location}</p>
-              </div>
-            </div>
-
-            <div className="mobile-about-item">
-              <div className="mobile-about-item-icon"><Mail size={20} /></div>
-              <div className="mobile-about-item-text">
-                <h4>EMAIL</h4>
-                <p>{data.aboutMe.email}</p>
-              </div>
-            </div>
-
-            <div className="mobile-about-item">
-              <div className="mobile-about-item-icon"><User size={20} /></div>
-              <div className="mobile-about-item-text">
-                <h4>AGE</h4>
-                <p>{data.aboutMe.age}</p>
-              </div>
-            </div>
-          </>
-        )}
       </div>
     </>
   );
