@@ -484,11 +484,12 @@
 /* About Tab Specific */
 .mobile-about-card {
   background: white;
-  border-radius: 24px;
-  padding: 24px;
+  border-radius: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  border: 1px solid rgba(161, 129, 255, 0.15);
+  gap: 12px;
 }
 .mobile-about-item {
   display: flex;

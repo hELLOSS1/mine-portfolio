@@ -241,9 +241,9 @@ const MobileView = () => {
 
       <div className="mobile-purple-overlap">
         <div className="mobile-about-card">
-          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ background: '#F4EFFF', padding: '8px', borderRadius: '10px', display: 'flex' }}>
-              <User size={20} color="#A181FF"/>
+          <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ background: '#F4EFFF', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+              <User size={18} color="#A181FF"/>
             </div>
             Introduction
           </h3>
@@ -252,9 +252,9 @@ const MobileView = () => {
       </div>
 
       <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
-        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ background: '#FCEEF5', padding: '8px', borderRadius: '10px', display: 'flex' }}>
-            <BookOpen size={20} color="#F98FB9"/>
+        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: '#FCEEF5', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+            <BookOpen size={18} color="#F98FB9"/>
           </div>
           My Background
         </h3>
@@ -262,9 +262,9 @@ const MobileView = () => {
       </div>
 
       <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
-        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ background: '#FEF6EC', padding: '8px', borderRadius: '10px', display: 'flex' }}>
-            <GraduationCap size={20} color="#F7B565"/>
+        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: '#FEF6EC', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+            <GraduationCap size={18} color="#F7B565"/>
           </div>
           Education
         </h3>
@@ -272,9 +272,9 @@ const MobileView = () => {
       </div>
 
       <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
-        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ background: '#EEF6FE', padding: '8px', borderRadius: '10px', display: 'flex' }}>
-            <Target size={20} color="#6BB5F6"/>
+        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: '#EEF6FE', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+            <Target size={18} color="#6BB5F6"/>
           </div>
           Career Goals
         </h3>
@@ -282,9 +282,9 @@ const MobileView = () => {
       </div>
 
       <div className="mobile-about-card" style={{ margin: '0 20px 20px' }}>
-        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ background: '#F1EBF9', padding: '8px', borderRadius: '10px', display: 'flex' }}>
-            <Heart size={20} color="#8E74E6"/>
+        <h3 style={{ fontSize: '16px', color: '#333', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: '#F1EBF9', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+            <Heart size={18} color="#8E74E6"/>
           </div>
           Interests
         </h3>
