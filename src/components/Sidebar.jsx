@@ -4,8 +4,7 @@ import { Home, User, Code2, Folder, Briefcase, Award, MessageSquare, FileText, L
 import { usePortfolio } from '../context/PortfolioContext';
 
 const Sidebar = () => {
-  const [activeTab, setActiveTab] = useState('Dashboard');
-  const { data } = usePortfolio();
+  const { data, activeTab, setActiveTab } = usePortfolio();
 
   const navItems = [
     { icon: <Home size={18} />, label: 'Dashboard' },

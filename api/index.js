@@ -15,7 +15,13 @@ const PORT = process.env.PORT || 5000;
 
 // CORS setup
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || '*',
+  origin: function (origin, callback) {
+    if (!origin || /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin) || origin === process.env.FRONTEND_URL) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   optionsSuccessStatus: 200,
   credentials: true
 };
@@ -28,18 +34,48 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 const upload = multer({ storage: multer.memoryStorage() });
 
 // Initialize Supabase Client
-const supabaseUrl = process.env.SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const rawSupabaseUrl = process.env.SUPABASE_URL || '';
+const supabaseUrl = rawSupabaseUrl.trim();
+
+// Diagnostic logging for Supabase URL
+console.log('--- SUPABASE DIAGNOSTICS ---');
+console.log(`SUPABASE_URL exists: ${!!rawSupabaseUrl}`);
+console.log(`Raw SUPABASE_URL length: ${rawSupabaseUrl.length}`);
+console.log(`Trimmed SUPABASE_URL length: ${supabaseUrl.length}`);
+if (supabaseUrl) {
+  try {
+    const parsedUrl = new URL(supabaseUrl);
+    console.log(`Parsed hostname: "${parsedUrl.hostname}"`);
+    const hasControlChars = /[\x00-\x1F\x7F]/.test(parsedUrl.hostname);
+    console.log(`Hostname contains control characters or whitespace: ${hasControlChars}`);
+  } catch (err) {
+    console.log('Failed to parse SUPABASE_URL:', err.message);
+  }
+}
+console.log('----------------------------');
+
+const supabaseKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
 const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
-const supabaseBucket = process.env.SUPABASE_STORAGE_BUCKET || 'portfolio-images';
+const supabaseBucket = (process.env.SUPABASE_STORAGE_BUCKET || 'portfolio-images').trim();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-do-not-use-in-production';
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'hELLOSS1';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'hEllo@1234#@#';
+const ADMIN_USERNAME = (process.env.ADMIN_USERNAME || 'hELLOSS1').trim();
+const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || 'hEllo@1234#@#').trim();
 
-// Helper to get data from PostgreSQL
+import fs from 'fs';
+
+// Helper to get data from PostgreSQL or fallback to JSON
 const getPortfolioData = async () => {
-  if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) return {};
+  if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) {
+    try {
+      const dataPath = path.resolve('src/data/portfolio.json');
+      const data = await fs.promises.readFile(dataPath, 'utf8');
+      return JSON.parse(data);
+    } catch (err) {
+      console.error("Error reading fallback JSON:", err);
+      return {};
+    }
+  }
   try {
     await initDb();
     const res = await db.query('SELECT data FROM portfolio_data WHERE id = 1');
@@ -51,9 +87,18 @@ const getPortfolioData = async () => {
   }
 };
 
-// Helper to save data to PostgreSQL
+// Helper to save data to PostgreSQL or fallback to JSON
 const savePortfolioData = async (data) => {
-  if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) return 0;
+  if (!(process.env.POSTGRES_URL || process.env.DATABASE_URL)) {
+    try {
+      const dataPath = path.resolve('src/data/portfolio.json');
+      await fs.promises.writeFile(dataPath, JSON.stringify(data, null, 2), 'utf8');
+      return 1;
+    } catch (err) {
+      console.error("Error writing fallback JSON:", err);
+      return 0;
+    }
+  }
   try {
     await initDb();
     const res = await db.query('UPDATE portfolio_data SET data = $1 WHERE id = 1', [JSON.stringify(data)]);

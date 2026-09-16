@@ -17,7 +17,7 @@ const RightWidgets = () => {
             About Me
           </h3>
           <p className="bio-text mb-4">
-            {data.hero.bio}
+            {data.aboutMe.shortDescription}
           </p>
           <div className="info-list flex-col gap-4">
             <div className="info-item flex-row gap-4">

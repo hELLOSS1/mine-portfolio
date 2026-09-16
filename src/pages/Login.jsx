@@ -14,7 +14,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || '';
+      const API_URL = import.meta.env.MODE === 'production' ? (import.meta.env.VITE_API_URL || 'https://mine-portfolio-api.onrender.com') : '';
       const response = await fetch(`${API_URL}/api/login`, {
         method: 'POST',
         headers: {

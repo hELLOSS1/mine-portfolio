@@ -9,65 +9,27 @@ const PortfolioContext = createContext();
 
 export const usePortfolio = () => useContext(PortfolioContext);
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://mine-portfolio-api.onrender.com';
+const API_URL = import.meta.env.MODE === 'production' ? (import.meta.env.VITE_API_URL || 'https://mine-portfolio-api.onrender.com') : '';
 
-const defaultData = {
-  theme: 'light',
-  hero: {
-    name: 'Mia',
-    role: 'Full Stack Developer',
-    bio: 'I build beautiful, responsive and user-friendly web applications with modern technologies.',
-    avatarImg,
-    plantImg
-  },
-  stats: {
-    projectsCompleted: '18',
-    yearsExperience: '2+',
-    happyClients: '12',
-    certifications: '6'
-  },
-  projects: [
-    { id: 1, title: 'TaskFlow', desc: 'A productivity tool for team collaboration.', img: taskflowImg, tags: ['React', 'Node.js', 'MongoDB'] },
-    { id: 2, title: 'GreenShop', desc: 'E-commerce website for plants & pots.', img: greenshopImg, tags: ['React', 'Stripe', 'Tailwind'] },
-    { id: 3, title: 'Weather App', desc: 'Real-time weather forecast application.', img: weatherImg, tags: ['JavaScript', 'API', 'CSS'] }
-  ],
-  experience: [
-    { id: 1, role: 'Frontend Developer', company: 'Tech Solutions Pvt. Ltd.', date: 'Mar 2023 - Present', color: '#F7B565' },
-    { id: 2, role: 'Web Developer Intern', company: 'CodeCraft Labs', date: 'Jun 2022 - Feb 2023', color: '#8E74E6' },
-    { id: 3, role: 'Freelance Developer', company: 'Self Employed', date: 'Jan 2021 - May 2022', color: '#8E74E6' }
-  ],
-  certificates: [
-    { id: 1, name: 'React.js', color: '#F4EFFF' },
-    { id: 2, name: 'Node.js', color: '#E8F5E9' },
-    { id: 3, name: 'MongoDB', color: '#EEF6FE' },
-    { id: 4, name: 'Tailwind CSS', color: '#FCEEF5' },
-  ],
-  socialLinks: [
-    { id: 1, platform: 'GitHub', url: 'https://github.com', color: '#F4EFFF' },
-    { id: 2, platform: 'LinkedIn', url: 'https://linkedin.com', color: '#EEF6FE' },
-    { id: 3, platform: 'Twitter', url: 'https://twitter.com', color: '#FCEEF5' },
-  ],
-  aboutMe: {
-    location: 'India',
-    email: 'mia.dev@email.com',
-    age: '22',
-    education: 'B.Tech in CSE, Parul University'
-  },
-  skills: [
-    { name: 'HTML / CSS', percent: '90%', color: 'linear-gradient(90deg, #A890F0, #8E74E6)' },
-    { name: 'JavaScript', percent: '85%', color: 'linear-gradient(90deg, #F98FB9, #F672A7)' },
-    { name: 'React.js', percent: '80%', color: 'linear-gradient(90deg, #F7B565, #F59E3D)' },
-    { name: 'Node.js', percent: '75%', color: 'linear-gradient(90deg, #76D89D, #5DBE84)' },
-    { name: 'MongoDB', percent: '70%', color: 'linear-gradient(90deg, #6BB5F6, #4EA1F0)' },
-    { name: 'Tailwind CSS', percent: '85%', color: 'linear-gradient(90deg, #A890F0, #8E74E6)' }
-  ],
-  visibility: {
-    showProjects: true,
-    showExperience: true,
-    showAboutMe: true,
-    showSkills: true
-  }
-};
+import defaultDataJson from '../data/portfolio.json';
+
+// Use imported JSON but fallback to some defaults if missing (though it shouldn't be)
+const defaultData = defaultDataJson || {};
+
+// If there are static images that need to be resolved by Vite during build time,
+// they would be imported here, but we'll rely on the JSON data strings or public URLs.
+// Let's ensure the initial images are still resolved if they are the default ones.
+if (defaultData.hero && defaultData.hero.avatarImg === '/src/assets/avatar_mia.jpg') {
+  defaultData.hero.avatarImg = avatarImg;
+}
+if (defaultData.hero && defaultData.hero.plantImg === '/src/assets/3d_plant.jpg') {
+  defaultData.hero.plantImg = plantImg;
+}
+if (defaultData.projects) {
+  if (defaultData.projects[0] && defaultData.projects[0].img === '/src/assets/taskflow.jpg') defaultData.projects[0].img = taskflowImg;
+  if (defaultData.projects[1] && defaultData.projects[1].img === '/src/assets/greenshop.jpg') defaultData.projects[1].img = greenshopImg;
+  if (defaultData.projects[2] && defaultData.projects[2].img === '/src/assets/weatherapp.jpg') defaultData.projects[2].img = weatherImg;
+}
 
 export const PortfolioProvider = ({ children }) => {
   const [data, setData] = useState(defaultData);
@@ -168,12 +130,14 @@ export const PortfolioProvider = ({ children }) => {
     }
   };
 
+  const [activeTab, setActiveTab] = useState('Dashboard');
+
   if (loading) {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#FAFAFA' }}>Loading...</div>;
   }
 
   return (
-    <PortfolioContext.Provider value={{ data, updateData, updateRootData, toggleVisibility, addArrayItem, updateArrayItem, deleteArrayItem, saveAllData }}>
+    <PortfolioContext.Provider value={{ data, updateData, updateRootData, toggleVisibility, addArrayItem, updateArrayItem, deleteArrayItem, saveAllData, activeTab, setActiveTab }}>
       {children}
     </PortfolioContext.Provider>
   );

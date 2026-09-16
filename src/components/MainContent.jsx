@@ -87,7 +87,7 @@ const MainContent = () => {
         <div className="hero-content">
           <p className="greeting">Good to see you here! <span role="img" aria-label="wave">👋</span></p>
           <h1>I'm {data.hero.name}<br/>{data.hero.role}</h1>
-          <p className="bio">{data.hero.bio}</p>
+          <p className="bio">{data.hero.shortBio}</p>
           <div className="hero-buttons flex-row gap-4 mt-4">
             <button className="btn flex-row gap-2" style={{ padding: '10px 16px', background: '#9E86E1', color: 'white', boxShadow: 'var(--clay-btn-purple)', border: 'none', borderRadius: 'var(--radius-sm)' }} onClick={() => {
               document.querySelector('.projects-section')?.scrollIntoView({ behavior: 'smooth' });
